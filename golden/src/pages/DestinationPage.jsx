@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import "../pagescss/destination.css";
 
-// Section components (import your own implementations)
+// Section components
 import OverviewSection from "./destinations/OverviewSection";
 import DealsSection from "./destinations/DealsSection";
 import TripReviewsSection from "./destinations/TripReviewsSection";
@@ -12,15 +12,13 @@ import FaqsSection from "./destinations/FaqsSection";
 import VideoSection from "./destinations/VideoSection";
 import Foot from "../pages/foot";
 
-import CurrencyConverterInline from "./destinations/CurrencyConverterInline";
-
 export default function DestinationPage() {
-  const { country } = useParams(); // slug from URL
+  const { country } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  // Fetch country data (including currency_code)
+  // Fetch destination data
   useEffect(() => {
     setLoading(true);
     axiosInstance
@@ -35,7 +33,7 @@ export default function DestinationPage() {
       });
   }, [country]);
 
-  // Fetch user profile (for nationality)
+  // Fetch user profile (optional usage later)
   useEffect(() => {
     axiosInstance
       .get("/accounts/profile/")
@@ -61,15 +59,15 @@ export default function DestinationPage() {
     );
   }
 
-  // ISO Codes & Currency
-  const nationalityCode = user?.nationality || "NP"; // fallback nationality code
-  const destinationCode = data.code || country.toUpperCase().slice(0, 2);
-  const destinationCurrency = data.currency_code || "USD";
-
   // Article categorization
-  const inspirationalArticles = data.articles?.filter((a) => a.is_inspirational) || [];
-  const suggestedArticles = data.articles?.filter((a) => a.is_suggested) || [];
-  const regularArticles = data.articles?.filter((a) => !a.is_inspirational && !a.is_suggested) || [];
+  const inspirationalArticles =
+    data.articles?.filter((a) => a.is_inspirational) || [];
+  const suggestedArticles =
+    data.articles?.filter((a) => a.is_suggested) || [];
+  const regularArticles =
+    data.articles?.filter(
+      (a) => !a.is_inspirational && !a.is_suggested
+    ) || [];
 
   return (
     <div className="destination-wrapper">
@@ -81,39 +79,19 @@ export default function DestinationPage() {
       </nav>
 
       {/* Hero */}
-      <div className="hero-section" style={{ backgroundImage: `url(${data.image})` }}>
+      <div
+        className="hero-section"
+        style={{ backgroundImage: `url(${data.image})` }}
+      >
         <div className="hero-text">
           <h1>{data.name}</h1>
           <h3>{data.subtitle}</h3>
         </div>
       </div>
 
-      {/* Currency Converter */}
-      <div
-        className="tools-wrapper"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "2rem",
-          justifyContent: "center",
-          backgroundColor: "#f5f7fa",
-          padding: "2rem",
-          borderBottom: "1px solid #ddd",
-        }}
-      >
-        {/* Show conversion only if destination currency is known */}
-        {destinationCurrency && destinationCurrency !== "USD" ? (
-          <CurrencyConverterInline fromCurrency={destinationCurrency} toCurrency="USD" />
-        ) : (
-          <p style={{ color: "#555" }}>
-            Currency is USD or unknown, conversion tools not shown.
-          </p>
-        )}
-      </div>
-
       {/* Top Tabs */}
       <nav className="top-tabs">
-        <ul>
+        <ul> 
           <li>
             <a href="#overview">Overview</a>
           </li>
@@ -155,15 +133,14 @@ export default function DestinationPage() {
           regularArticles={regularArticles}
           country={data.name}
           learnMoreTopics={data.learn_more_topics || []}
-          // Pass slug here for related countries fetch
-          glanceData={{ 
-            countryName: data.name, 
-            slug: data.slug,        // <<--- ADD THIS
-            ...data.overview 
+          glanceData={{
+            countryName: data.name,
+            slug: data.slug,
+            ...data.overview,
           }}
         />
       </div>
-
+ 
       <div id="faqs">
         <FaqsSection faqs={data.faqs} />
       </div>

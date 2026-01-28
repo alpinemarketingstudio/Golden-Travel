@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
-  matchPath, 
+  matchPath,
 } from "react-router-dom";
 
 // Layout components
@@ -37,9 +37,9 @@ import Roof from "./components/roof";
 import Trip from "./components/trip";
 import Journal from "./components/journal";
 
-
 // Pages
 import AboutUs from "./pages/Aboutus";
+import OurStory from "./pages/Aboutus"; // updated path
 import AllDestinations from "./pages/AllDestinations";
 import DestinationPage from "./pages/DestinationPage";
 import DestDescription from "./pages/destdescription";
@@ -108,6 +108,7 @@ function UserLayout() {
       {!hideLayout && <Navbar />}
 
       <Routes>
+        {/* Home */}
         <Route
           path="/"
           element={
@@ -124,15 +125,18 @@ function UserLayout() {
             </>
           }
         />
+
+        {/* Destinations */}
         <Route path="/alldestinations" element={<AllDestinations />} />
         <Route path="/destinations/:country" element={<DestinationPage />} />
         <Route
           path="/destinations/:country/deal/:dealId"
           element={<DestDescription />}
         />
-        <Route path="/about" element={<AboutUs />} />
-        
 
+        {/* About Us */}
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/destinations/aboutus" element={<OurStory />} />
 
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />
@@ -159,10 +163,10 @@ function UserLayout() {
 
         {/* Search */}
         <Route path="/search" element={<Search />} />
-        
+
         {/* Contact */}
         <Route path="/contact" element={<Contact />} />
-        
+
         {/* Wishlist and Bookings */}
         <Route path="/wishlist" element={<FavouritePackages />} />
         <Route path="/manage-booking" element={<MyBookings />} />
@@ -179,7 +183,10 @@ function App() {
     <Router>
       <ScrollToTop />
       <Routes>
+        {/* Admin Routes */}
         <Route path="/admin/*" element={<AdminRoutes />} />
+
+        {/* User Layout */}
         <Route path="/*" element={<UserLayout />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />

@@ -3,6 +3,7 @@ import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import DatePicker from "react-datepicker";
 import { MapPin, Calendar, Search as SearchIcon, AlertCircle } from "lucide-react";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/search.css";
 
@@ -34,13 +35,12 @@ export default function Search() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // --- Core Search Initialization from URL ---
-  // Reads 'query' (from general search bar) and 'region' (from region links like 'Central Asia')
+  // Initialize from URL
   useEffect(() => {
     const sd = searchParams.get("start_date");
     const ed = searchParams.get("end_date");
-    const q = searchParams.get("query"); // <-- Initializes text search
-    const r = searchParams.get("region"); // <-- Initializes region filter
+    const q = searchParams.get("query");
+    const r = searchParams.get("region");
 
     if (sd) setStartDate(new Date(sd));
     if (ed) setEndDate(new Date(ed));
@@ -53,16 +53,13 @@ export default function Search() {
 
   const fetchRegionName = async (id) => {
     try {
-      // Assuming your API endpoint to fetch region details is /api/regions/{id}/
       const res = await axiosInstance.get(`/api/regions/${id}/`);
       setRegionName(res.data.name);
-    } catch (err) {
-      console.warn("Failed to fetch region name", err);
+    } catch {
       setRegionName(null);
     }
   };
 
-  // Determines if a search needs to be executed based on any active criteria
   const shouldSearch =
     searchQuery.trim() ||
     startDate ||
@@ -74,9 +71,8 @@ export default function Search() {
     filters.sale ||
     filters.styles.length > 0 ||
     filters.themes.length > 0 ||
-    regionId; // regionId ensures regional searches are executed
+    regionId;
 
-  // Fetch deals data from the API, sending all current search criteria
   const fetchDeals = async () => {
     const params = {
       start_date: startDate?.toISOString().split("T")[0],
@@ -89,40 +85,32 @@ export default function Search() {
       style: filters.styles,
       theme: filters.themes,
       query: searchQuery.trim() || undefined,
-      region: regionId || undefined, // <-- Sent to API for region-specific filtering
+      region: regionId || undefined,
     };
 
     try {
       const res = await axiosInstance.get("/destinations/search-deals/", { params });
       setResults(res.data.results || res.data);
-      setPage(1); // Reset page on new API results
+      setPage(1);
     } catch (err) {
       console.error("Failed to fetch deals:", err);
       setResults([]);
     }
   };
 
-  // Effect to trigger API fetch whenever primary search states change
   useEffect(() => {
-    if (shouldSearch) {
-      fetchDeals();
-    } else {
-      setResults([]);
-    }
-    // Dependency list ensures API call updates when any main search param changes
-  }, [startDate, endDate, filters.sale, filters.styles.length, filters.themes.length, searchQuery, regionId]); 
+    if (shouldSearch) fetchDeals();
+    else setResults([]);
+  }, [startDate, endDate, filters.sale, filters.styles.length, filters.themes.length, searchQuery, regionId]);
 
-  // Helper to normalize filter values
   const norm = (v = "") => v.toLowerCase().trim();
 
-  // Memoize available styles and themes for filter display
   const { styleList, styleCount, themeList, themeCount } = useMemo(() => {
     const sC = {};
     const tC = {};
     results.forEach((d) => {
       const sKey = norm(d.style);
       if (sKey) sC[sKey] = (sC[sKey] || 0) + 1;
-
       (d.themes || []).forEach((t) => {
         const tKey = norm(t);
         if (tKey) tC[tKey] = (tC[tKey] || 0) + 1;
@@ -136,9 +124,8 @@ export default function Search() {
     };
   }, [results]);
 
-  // Handle filter updates and reset pagination
   const updateFilter = (type, value) => {
-    setPage(1); 
+    setPage(1);
     if (type === "styles" || type === "themes") {
       setFilters((prev) => {
         const updated = prev[type].includes(value)
@@ -153,7 +140,12 @@ export default function Search() {
     }
   };
 
-  // Apply client-side filters (price, duration, sale, styles, themes)
+  const toggleWishlist = (id) => {
+    setResults((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, is_favorite: !r.is_favorite } : r))
+    );
+  };
+
   const filteredResults = useMemo(() => {
     return results.filter((d) => {
       const priceNum = Number(d.price);
@@ -166,8 +158,7 @@ export default function Search() {
         (!filters.durationMin || duration >= Number(filters.durationMin)) &&
         (!filters.durationMax || duration <= Number(filters.durationMax));
       const saleOk = !filters.sale || d.on_sale === true;
-      const styleOk =
-        filters.styles.length === 0 || filters.styles.includes(norm(d.style));
+      const styleOk = filters.styles.length === 0 || filters.styles.includes(norm(d.style));
       const themeOk =
         filters.themes.length === 0 ||
         (d.themes || []).some((t) => filters.themes.includes(norm(t)));
@@ -176,16 +167,12 @@ export default function Search() {
     });
   }, [results, filters]);
 
-  // Apply pagination
   const paginatedResults = filteredResults.slice((page - 1) * perPage, page * perPage);
 
-  // Date picker change handlers with validation
   const onStartDateChange = (date) => {
     setStartDate(date);
     setEndDateError("");
-    if (endDate && date && endDate < date) {
-      setEndDate(null);
-    }
+    if (endDate && date && endDate < date) setEndDate(null);
   };
 
   const onEndDateChange = (date) => {
@@ -205,7 +192,6 @@ export default function Search() {
     if (!startDate) setEndDateError("Please select start date first");
   };
 
-  // Truncate function for descriptions
   const truncateText = (text, maxLength = 100) => {
     if (!text) return "";
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
@@ -224,7 +210,7 @@ export default function Search() {
         {regionName ? `in ${regionName}` : "matching your search"}
       </h2>
 
-      {/* --- Main Search Bar --- */}
+      {/* --- Search Bar --- */}
       <div className="search-bar-wrapper1">
         <div className="search-bar-container1">
           <div className="search-box1">
@@ -236,8 +222,6 @@ export default function Search() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-
-          <div className="vertical-separator"></div>
 
           <div className="date-inline-box">
             <div className="date-inline-field">
@@ -251,8 +235,6 @@ export default function Search() {
                 onKeyDown={(e) => e.preventDefault()}
               />
             </div>
-
-            <span className="separator">—</span>
 
             <div className="date-inline-field end-date-wrapper">
               <Calendar size={16} className="calendar-icon" />
@@ -281,121 +263,76 @@ export default function Search() {
         )}
       </div>
 
-      {/* --- Search Layout: Filters (Aside) and Results (Grid) --- */}
+      {/* --- Filters & Results --- */}
       <div className="search-layout">
         <aside className="search-filters">
-          {/* Duration Filters */}
           <h5>Duration (Days)</h5>
           <div className="range-row">
-            <input
-              type="number"
-              placeholder="Min"
-              value={filters.durationMin}
-              onChange={(e) => updateFilter("durationMin", e.target.value)}
-              min={0}
-            />
-            <input
-              type="number"
-              placeholder="Max"
-              value={filters.durationMax}
-              onChange={(e) => updateFilter("durationMax", e.target.value)}
-              min={0}
-            />
+            <input type="number" placeholder="Min" value={filters.durationMin} onChange={(e) => updateFilter("durationMin", e.target.value)} min={0} />
+            <input type="number" placeholder="Max" value={filters.durationMax} onChange={(e) => updateFilter("durationMax", e.target.value)} min={0} />
           </div>
 
-          {/* Price Filters */}
           <h5>Price</h5>
           <div className="range-row">
-            <input
-              type="number"
-              placeholder="$ Min"
-              value={filters.priceMin}
-              onChange={(e) => updateFilter("priceMin", e.target.value)}
-              min={0}
-            />
-            <input
-              type="number"
-              placeholder="$ Max"
-              value={filters.priceMax}
-              onChange={(e) => updateFilter("priceMax", e.target.value)}
-              min={0}
-            />
+            <input type="number" placeholder="$ Min" value={filters.priceMin} onChange={(e) => updateFilter("priceMin", e.target.value)} min={0} />
+            <input type="number" placeholder="$ Max" value={filters.priceMax} onChange={(e) => updateFilter("priceMax", e.target.value)} min={0} />
           </div>
 
-          {/* Sale Filter */}
           <h5>Travel Deals</h5>
           <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={filters.sale}
-              onChange={() => updateFilter("sale")}
-            />
+            <input type="checkbox" checked={filters.sale} onChange={() => updateFilter("sale")} />
             Trips on sale
           </label>
 
-          {/* Styles Filters (Dynamically generated from results) */}
           {styleList.length > 0 && <h5>Styles</h5>}
           {styleList.map((style) => (
             <label key={style} className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={filters.styles.includes(style)}
-                onChange={() => updateFilter("styles", style)}
-              />
-              {style.charAt(0).toUpperCase() + style.slice(1)}{" "}
-              <span className="count">({styleCount[style]})</span>
+              <input type="checkbox" checked={filters.styles.includes(style)} onChange={() => updateFilter("styles", style)} />
+              {style.charAt(0).toUpperCase() + style.slice(1)} <span className="count">({styleCount[style]})</span>
             </label>
           ))}
 
-          {/* Themes Filters (Dynamically generated from results) */}
           {themeList.length > 0 && <h5>Themes</h5>}
           {themeList.map((theme) => (
             <label key={theme} className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={filters.themes.includes(theme)}
-                onChange={() => updateFilter("themes", theme)}
-              />
-              {theme.charAt(0).toUpperCase() + theme.slice(1)}{" "}
-              <span className="count">({themeCount[theme]})</span>
+              <input type="checkbox" checked={filters.themes.includes(theme)} onChange={() => updateFilter("themes", theme)} />
+              {theme.charAt(0).toUpperCase() + theme.slice(1)} <span className="count">({themeCount[theme]})</span>
             </label>
           ))}
         </aside>
 
-        {/* --- Search Results Grid --- */}
-        <div className="search-grid">
+        <div className="deals-grid">
           {!shouldSearch ? (
             <p className="search-placeholder">Start typing or select a region to search for trips.</p>
           ) : paginatedResults.length > 0 ? (
-            paginatedResults.map((result) => (
-              <div className="search-card" key={result.id}>
-                <div
-                  className="search-card-img"
-                  style={{
-                    backgroundImage: `url(${result.image || "https://via.placeholder.com/300"})`,
-                  }}
-                >
-                  {result.on_sale && <span className="search-ribbon">ON SALE</span>}
+            paginatedResults.map((result, i) => (
+              <div className="deal-card" key={result.id} style={{ "--i": i }}>
+                <div className="deal-image" style={{ backgroundImage: `url(${result.image || "https://via.placeholder.com/300"})` }}>
+                  {result.on_sale && <div className="ribbon">ON SALE</div>}
+
+                  {/* Wishlist heart */}
+                  <button
+                    className="wishlist-btn"
+                    onClick={() => toggleWishlist(result.id)}
+                    aria-label="Add to wishlist"
+                  >
+                    {result.is_favorite ? <FaHeart color="goldenrod" /> : <FaRegHeart color="white" />}
+                  </button>
                 </div>
-                <div className="search-card-content">
+
+                <div className="deal-overlay sc">
                   <h3>{result.title}</h3>
-                  <p className="excerpt">{truncateText(result.description)}</p>
-                  <div className="search-card-footer">
+                  <p className="excerpt">{truncateText(result.description, 80)}</p>
+                  <div className="bottom-row">
                     <button
-                      className="details-btn"
+                      className="deal-btn small"
                       onClick={() =>
-                        navigate(
-                          // Example route: /destinations/country-slug/deal/trip-title-slug
-                          `/destinations/${result.country?.slug || "unknown"}/deal/${slugify(
-                            result.title
-                          )}`
-                        )
+                        navigate(`/destinations/${result.country?.slug || "unknown"}/deal/${slugify(result.title)}`)
                       }
                     >
                       See Details
                     </button>
-                    <div className="price-info">
-                      {/* Placeholder logic for old price/discount */}
+                    <div className="price-wrap">
                       <span className="old-price">${Number(result.price) + 400}</span>
                       <span className="new-price">${result.price}</span>
                     </div>
@@ -409,32 +346,12 @@ export default function Search() {
         </div>
       </div>
 
-      {/* --- Pagination Controls --- */}
+      {/* Pagination */}
       {filteredResults.length > 0 && (
         <div className="search-pagination">
-          <button
-            className="icon-btn"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            aria-label="Previous page"
-          >
-            ◀
-          </button>
-          <span>
-            Page {page} of {Math.ceil(filteredResults.length / perPage) || 1}
-          </span>
-          <button
-            className="icon-btn"
-            onClick={() =>
-              setPage((p) =>
-                Math.min(Math.ceil(filteredResults.length / perPage), p + 1)
-              )
-            }
-            disabled={page >= Math.ceil(filteredResults.length / perPage)}
-            aria-label="Next page"
-          >
-            ▶
-          </button>
+          <button className="icon-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label="Previous page">◀</button>
+          <span>Page {page} of {Math.ceil(filteredResults.length / perPage) || 1}</span>
+          <button className="icon-btn" onClick={() => setPage((p) => Math.min(Math.ceil(filteredResults.length / perPage), p + 1))} disabled={page >= Math.ceil(filteredResults.length / perPage)} aria-label="Next page">▶</button>
         </div>
       )}
     </section>

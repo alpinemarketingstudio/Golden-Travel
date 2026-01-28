@@ -1,9 +1,11 @@
+/* ---------- GENERAL ---------- */
 .search-results-page {
   background-color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding-bottom: 60px;
 }
 
+/* ---------- BREADCRUMB ---------- */
 .breadcrumb {
   width: 100%;
   background-color: #fff;
@@ -21,7 +23,7 @@
   z-index: 999;
 }
 .breadcrumb a {
-  color: var(--primary-color);
+  color: var(--primary-color, goldenrod);
   text-decoration: underline;
   font-weight: 500;
 }
@@ -29,6 +31,7 @@
   color: #aaa;
 }
 
+/* ---------- HEADER ---------- */
 .search-results-header {
   padding-left: 90px;
   margin-bottom: 10px;
@@ -39,6 +42,7 @@
   font-weight: 600;
 }
 
+/* ---------- SEARCH BAR ---------- */
 .search-bar-wrapper1 {
   width: 100%;
   max-width: 1000px;
@@ -64,6 +68,7 @@
   gap: 5px;
   padding: 6px 8px;
   border-radius: 30px;
+  background-color: #f9f9f9;
 }
 .search-box1 input {
   border: none;
@@ -84,6 +89,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  background-color: #f9f9f9;
+  padding: 6px 8px;
+  border-radius: 30px;
 }
 .inline-datepicker {
   border: none;
@@ -93,17 +101,9 @@
   color: #333;
   cursor: pointer;
 }
-.separator {
-  color: #999;
-}
-.vertical-separator {
-  width: 1px;
-  height: 32px;
-  background-color: #ccc;
-}
 
 .search-btn {
-  background-color: var(--highlight-color);
+  background-color: var(--highlight-color, goldenrod);
   color: white;
   padding: 10px 22px;
   border: none;
@@ -117,7 +117,7 @@
   transition: background 0.3s ease;
 }
 .search-btn:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--primary-dark, #c88a0d);
 }
 
 .error-popup {
@@ -137,6 +137,7 @@
   animation: fadeIn 0.3s ease forwards;
 }
 
+/* ---------- LAYOUT ---------- */
 .search-layout {
   display: flex;
   gap: 30px;
@@ -178,29 +179,58 @@
   accent-color: goldenrod;
 }
 
-.search-grid {
+/* ---------- DEALS GRID ---------- */
+.deals-grid {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
 }
-.search-card {
+
+/* ---------- DEAL CARD ---------- */
+.deal-card {
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   overflow: hidden;
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  height: 400px;
 }
-.search-card:hover {
+.deal-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
-.search-card-img {
-  height: 300px;
+
+.deal-image {
+  height: 220px;
   background-size: cover;
   background-position: center;
   position: relative;
 }
-.search-ribbon {
+
+/* Wishlist Heart Button */
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background:rgb(60, 4, 4);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 5;
+}
+
+
+.ribbon {
   position: absolute;
   top: 14px;
   left: -40px;
@@ -213,37 +243,49 @@
   transform: rotate(-45deg);
   font-weight: 600;
 }
-.search-card-content {
+
+/* Overlay for details */
+.deal-overlay {
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* fill remaining space */
+  justify-content: space-between; /* push bottom-row down */
+  gap: 6px;
 }
-.search-card-content h3 {
+.deal-overlay h3 {
   font-size: 1rem;
-  margin: 0 0 4px;
+  margin: 0;
 }
-.search-card-content .excerpt {
+.deal-overlay .excerpt {
   font-size: 0.85rem;
   color: #555;
+  line-height: 1.3;
 }
-.search-card-footer {
+
+.bottom-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 12px;
+  margin-top: auto; /* stick to bottom */
 }
-.details-btn {
+
+.deal-btn {
   border: 1px solid #333;
   background: transparent;
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
-.details-btn:hover {
+.deal-btn:hover {
   background: goldenrod;
   color: white;
   border-color: goldenrod;
 }
-.price-info {
+
+.price-wrap {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -258,6 +300,7 @@
   color: #222;
 }
 
+/* ---------- PAGINATION ---------- */
 .search-pagination {
   display: flex;
   justify-content: flex-end;
@@ -270,27 +313,65 @@
   font-size: 1.6rem;
   color: goldenrod;
   cursor: pointer;
+  border: none;
+  background: transparent;
 }
 .search-pagination .icon-btn:hover {
   color: #d4a017;
 }
 
+/* ---------- PLACEHOLDERS ---------- */
+.search-placeholder, .no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 0;
+  color: #555;
+}
+
+/* ---------- RESPONSIVE ---------- */
 @media (max-width: 1024px) {
-  .search-grid {
+  .deals-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @media (max-width: 768px) {
+  .search-bar-wrapper1 {
+    padding: 0 20px;
+  }
+  .search-bar-container1 {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .search-box1,
+  .date-inline-box,
+  .search-btn {
+    flex: unset;
+    width: 100%;
+  }
+  .date-inline-box {
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .search-layout {
     flex-direction: column;
     padding: 0 20px;
   }
-  .search-bar-wrapper1 {
-    padding: 0 20px;
-  }
-  .search-grid {
+
+  .deals-grid {
     grid-template-columns: 1fr;
   }
+
+  .deal-card {
+    height: auto; /* allow card to expand */
+  }
+  .deal-overlay {
+    flex: unset; /* remove flex fill on mobile */
+    justify-content: normal;
+  }
+
   .search-pagination {
     justify-content: center;
     padding: 20px 20px 40px;

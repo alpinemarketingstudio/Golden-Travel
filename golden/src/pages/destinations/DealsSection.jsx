@@ -11,7 +11,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import "../../pagescss/deals.css";
 
 const INITIAL_VISIBLE = 3;
-
+ 
 const slugify = (str) =>
   str
     .toLowerCase()
@@ -340,7 +340,7 @@ export default function DealsSection({ data = {} }) {
                       {liked[d.id] ? <FaHeart /> : <FaRegHeart />}
                     </button>
 
-                    <div className="deal-overlay sc">
+                    <div className="deal-overlay sc"> 
                       <h3>{d.title}</h3>
                       <p className="excerpt">
                         {(d.description && d.description.length > 100

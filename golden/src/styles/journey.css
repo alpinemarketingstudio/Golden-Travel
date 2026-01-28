@@ -75,7 +75,7 @@
 .exclusive-card {
   position: relative;
   flex: 0 0 270px;
-  height: 400px;
+  height: 350px;
   background-size: cover;
   background-position: center;
   border-radius: var(--radius);
@@ -101,7 +101,7 @@
 
 .exclusive-badge-wrapper {
   position: absolute;
-  top: 12px;
+  top: 10px;
   left: -50px;
   width: 200px;
   transform: rotate(-45deg);

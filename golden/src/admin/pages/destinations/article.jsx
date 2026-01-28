@@ -4,13 +4,12 @@ import "./article.css";
 
 const Article = () => {
   const [articles, setArticles] = useState([]);
-  const [countries, setCountries] = useState([]);
   const [selected, setSelected] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
-    country: "", // store country ID
+    country: "", // now text field
     location: "",
     description: "",
     image: null,
@@ -32,19 +31,8 @@ const Article = () => {
     }
   };
 
-  // Fetch countries
-  const fetchCountries = async () => {
-    try {
-      const res = await axiosInstance.get("/admin-dashboard/countries/");
-      setCountries(res.data.results || res.data);
-    } catch (err) {
-      console.error("Failed to fetch countries:", err);
-    }
-  };
-
   useEffect(() => {
     fetchArticles();
-    fetchCountries();
   }, []);
 
   const openModal = (article = null) => {
@@ -52,7 +40,7 @@ const Article = () => {
       setSelected(article);
       setFormData({
         title: article.title,
-        country: article.country?.id || "", // store ID
+        country: article.country || "", // text input
         location: article.location,
         description: article.description || "",
         image: null,
@@ -88,19 +76,13 @@ const Article = () => {
   };
 
   const saveArticle = async () => {
-    if (!formData.country) {
-      return alert("Please select a country.");
-    }
-    if (!formData.description) {
-      return alert("Description is required.");
-    }
+    if (!formData.country) return alert("Please enter a country.");
+    if (!formData.description) return alert("Description is required.");
 
     try {
       const payload = new FormData();
       Object.keys(formData).forEach((key) => {
-        if (formData[key] !== null) {
-          payload.append(key, formData[key]);
-        }
+        if (formData[key] !== null) payload.append(key, formData[key]);
       });
 
       if (selected) {
@@ -144,9 +126,7 @@ const Article = () => {
   return (
     <div className="article-container">
       <h2 className="article-heading">🗞️ Articles</h2>
-      <p className="article-subtitle">
-        Create and manage travel-related articles and guides.
-      </p>
+      <p className="article-subtitle">Create and manage travel-related articles and guides.</p>
       <button className="add-btn" onClick={() => openModal()}>
         + Add New Article
       </button>
@@ -168,16 +148,10 @@ const Article = () => {
             {articles.map((article) => (
               <tr key={article.id}>
                 <td>{article.title}</td>
-                <td className="hide-mobile">{article.country?.name || ""}</td>
+                <td className="hide-mobile">{article.country || ""}</td>
                 <td className="hide-mobile">{article.location}</td>
                 <td className="hide-mobile">
-                  {article.image && (
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="article-img-circle"
-                    />
-                  )}
+                  {article.image && <img src={article.image} alt={article.title} className="article-img-circle" />}
                 </td>
                 <td className="hide-mobile">
                   <input type="checkbox" checked={article.suggested} readOnly />
@@ -186,12 +160,8 @@ const Article = () => {
                   <input type="checkbox" checked={article.inspirational} readOnly />
                 </td>
                 <td>
-                  <button className="details-btn" onClick={() => openModal(article)}>
-                    Edit
-                  </button>
-                  <button className="delete-btn" onClick={() => deleteArticle(article.id)}>
-                    Delete
-                  </button>
+                  <button className="details-btn" onClick={() => openModal(article)}>Edit</button>
+                  <button className="delete-btn" onClick={() => deleteArticle(article.id)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -206,47 +176,30 @@ const Article = () => {
             <h3>{selected ? "Edit Article" : "Add New Article"}</h3>
 
             <div className="form-group">
+              <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder=" " />
               <label>Title</label>
-              <input type="text" name="title" value={formData.title} onChange={handleChange} />
             </div>
 
+            {/* Country as text input */}
             <div className="form-group">
+              <input type="text" name="country" value={formData.country} onChange={handleChange} placeholder=" " />
               <label>Country</label>
-              <select name="country" value={formData.country} onChange={handleChange}>
-                <option value="">Select a country</option>
-                {Array.isArray(countries) &&
-                  countries.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-              </select>
             </div>
 
             <div className="form-group">
+              <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder=" " />
               <label>Location</label>
-              <input type="text" name="location" value={formData.location} onChange={handleChange} />
             </div>
 
             <div className="form-group">
+              <textarea name="description" value={formData.description} onChange={handleChange} rows={4} placeholder=" " />
               <label>Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={4}
-              />
             </div>
 
             <div className="form-group">
-              <label>Image</label>
               <input type="file" name="image" onChange={handleChange} />
-              {selected?.image && !formData.image && (
-                <img src={selected.image} alt="Preview" className="modal-img" />
-              )}
-              {formData.image && (
-                <img src={URL.createObjectURL(formData.image)} alt="Preview" className="modal-img" />
-              )}
+              {selected?.image && !formData.image && <img src={selected.image} alt="Preview" className="modal-img" />}
+              {formData.image && <img src={URL.createObjectURL(formData.image)} alt="Preview" className="modal-img" />}
             </div>
 
             <div className="checkbox-row">

@@ -5,18 +5,12 @@ import "./deals.css";
 const TravelDealList = () => {
   const [filter, setFilter] = useState("All");
   const [deals, setDeals] = useState([]);
-  const [countries, setCountries] = useState([]);
-  const [categories] = useState([
-    { id: "adventure", name: "Adventure" },
-    { id: "culture", name: "Culture" },
-    { id: "group-travel", name: "Group Travel" },
-  ]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [current, setCurrent] = useState({
     id: null,
-    country_id: "",
-    category_id: "",
+    country: "",
+    category: "",
     places: "",
     city: "",
     map: "",
@@ -31,18 +25,14 @@ const TravelDealList = () => {
     description: "",
   });
 
-  // Fetch deals and countries
+  // Fetch deals
   const fetchDeals = async () => {
     setLoading(true);
     try {
-      const [dealsRes, countriesRes] = await Promise.all([
-        axiosInstance.get("admin-dashboard/travel-deals/"),
-        axiosInstance.get("admin-dashboard/countries/"),
-      ]);
-      setDeals(dealsRes.data.results || dealsRes.data);
-      setCountries(countriesRes.data.results || countriesRes.data);
+      const res = await axiosInstance.get("admin-dashboard/travel-deals/");
+      setDeals(res.data.results || res.data);
     } catch (err) {
-      console.error("Failed to fetch data:", err);
+      console.error("Failed to fetch deals:", err);
     } finally {
       setLoading(false);
     }
@@ -55,8 +45,8 @@ const TravelDealList = () => {
   const openAddModal = () => {
     setCurrent({
       id: null,
-      country_id: "",
-      category_id: "",
+      country: "",
+      category: "",
       places: "",
       city: "",
       map: "",
@@ -76,9 +66,9 @@ const TravelDealList = () => {
   const openEditModal = (item) => {
     setCurrent({
       ...item,
-      country_id: item.country?.id || item.country_id,
-      category_id: item.category?.id || item.category_id,
-      image: null, // image will be uploaded again if editing
+      country: item.country || "",
+      category: item.category || "",
+      image: null,
       themes: item.themes ? item.themes.join(",") : "",
     });
     setModalOpen(true);
@@ -98,10 +88,8 @@ const TravelDealList = () => {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-
       Object.keys(current).forEach((key) => {
         if (key === "id" || !current[key]) return;
-
         if (key === "image" && current.image instanceof File) {
           formData.append("image", current.image);
         } else if (key === "themes") {
@@ -189,7 +177,10 @@ const TravelDealList = () => {
               <h3>{d.title}</h3>
               <p className="subtitle">{d.subtitle}</p>
               <p>
-                <strong>Country:</strong> {d.country?.name || d.country_id || "—"}
+                <strong>Country:</strong> {d.country || "—"}
+              </p>
+              <p>
+                <strong>Category:</strong> {d.category || "—"}
               </p>
               <p>
                 <strong>Days:</strong> {d.days}
@@ -203,10 +194,7 @@ const TravelDealList = () => {
               <button className="edit-btn" onClick={() => openEditModal(d)}>
                 Edit
               </button>
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(d.id)}
-              >
+              <button className="delete-btn" onClick={() => handleDelete(d.id)}>
                 Delete
               </button>
             </div>
@@ -222,50 +210,13 @@ const TravelDealList = () => {
           >
             <h3>{current.id ? "Edit Deal" : "Add New Deal"}</h3>
 
-            <div className="form-group">
-              <label>Country</label>
-              <select
-                name="country_id"
-                value={current.country_id}
-                onChange={handleChange}
-              >
-                <option value="">Select Country</option>
-                {countries.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Category</label>
-              <select
-                name="category_id"
-                value={current.category_id}
-                onChange={handleChange}
-              >
-                <option value="">Select Category</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {Object.keys(current)
-              .filter((key) => !["id", "country_id", "category_id"].includes(key))
+              .filter((key) => key !== "id")
               .map((key) =>
                 key === "image" ? (
                   <div className="form-group" key={key}>
+                    <input type="file" name="image" onChange={handleChange} />
                     <label>Image</label>
-                    <input
-                      type="file"
-                      name="image"
-                      accept="image/*"
-                      onChange={handleChange}
-                    />
                     {current.image && current.image instanceof File && (
                       <img
                         src={URL.createObjectURL(current.image)}
@@ -276,25 +227,25 @@ const TravelDealList = () => {
                   </div>
                 ) : key === "description" ? (
                   <div className="form-group" key={key}>
-                    <label>{key}</label>
                     <textarea
                       name={key}
-                      rows="3"
                       value={current[key]}
                       onChange={handleChange}
-                      placeholder={key}
+                      rows="3"
+                      placeholder=" "
                     />
+                    <label>{key}</label>
                   </div>
                 ) : (
                   <div className="form-group" key={key}>
-                    <label>{key}</label>
                     <input
                       type="text"
                       name={key}
                       value={current[key]}
                       onChange={handleChange}
-                      placeholder={key}
+                      placeholder=" "
                     />
+                    <label>{key}</label>
                   </div>
                 )
               )}

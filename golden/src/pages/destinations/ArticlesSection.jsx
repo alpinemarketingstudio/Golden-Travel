@@ -14,7 +14,7 @@ export default function ArticlesSection({
 
   // Fetch country-specific blogs using axiosInstance (not fetch)
   useEffect(() => {
-    if (glanceData.countryName) {
+    if (glanceData.countryName) { 
       axiosInstance
         .get(`blogs?country=${encodeURIComponent(glanceData.countryName)}`)
         .then((response) => {
@@ -92,7 +92,7 @@ export default function ArticlesSection({
         <section className="article-section">
           <div className="article-title-wrapper">
             <h2 className="section-title">You might also like</h2>
-            <div className="section-underline1"></div>
+            <div className="article-title-underline"></div>
           </div>
           <div className="article-card-grid">
             {suggestedCountries.map((country) => (

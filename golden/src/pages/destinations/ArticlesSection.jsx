@@ -58,7 +58,7 @@ export default function ArticlesSection({
         <section className="inspired-section">
           <h2 className="section-title">Get inspired on the Good Times</h2>
           <div className="inspired-cards">
-            {countryBlogs.map((blog) => (
+            {countryBlogs.map((blog) => ( 
               <article className="inspired-card" key={blog.id}>
                 <div className="inspired-img-wrapper">
                   <img

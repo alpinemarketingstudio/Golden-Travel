@@ -3,7 +3,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/AllDestinations.css";
 import AOS from "aos";
-import "aos/dist/aos.css";
+import "aos/dist/aos.css"; 
 
 import fallbackImage from "../assets/img2.jpg";
 import baliImage from "../assets/bali.jpg";

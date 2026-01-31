@@ -13,7 +13,6 @@ export default function Reviewplaces({ data, reviews, setReviews }) {
 
   const totalReviews = reviews.length;
 
-  // Parse average rating to number safely
   const averageRatingNum = totalReviews
     ? reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
     : 0;
@@ -32,7 +31,6 @@ export default function Reviewplaces({ data, reviews, setReviews }) {
     setSelectedRating(selectedRating === star ? null : star);
   };
 
-  // Format date to more readable form e.g. "Jul 15, 2025"
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const options = { year: "numeric", month: "short", day: "numeric" };
@@ -41,7 +39,7 @@ export default function Reviewplaces({ data, reviews, setReviews }) {
 
   const handleReviewAdded = (newReview) => {
     setReviews((prev) => [newReview, ...prev]);
-    setSelectedRating(null); // reset filter when a new review added
+    setSelectedRating(null);
   };
 
   return (
@@ -66,7 +64,7 @@ export default function Reviewplaces({ data, reviews, setReviews }) {
           onClick={() => setShowModal(true)}
           aria-label="Add a new review"
         >
-          Add Review
+          + Add Review
         </button>
       </div>
 

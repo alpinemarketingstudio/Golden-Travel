@@ -1,12 +1,12 @@
 /* ---------- GENERAL ---------- */
-.search-results-page {
+.sr-page {
   background-color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding-bottom: 60px;
 }
 
 /* ---------- BREADCRUMB ---------- */
-.breadcrumb {
+.sr-breadcrumb {
   width: 100%;
   background-color: #fff;
   border-top: 1px solid #eee;
@@ -22,28 +22,28 @@
   position: relative;
   z-index: 999;
 }
-.breadcrumb a {
+.sr-breadcrumb a {
   color: var(--primary-color, goldenrod);
   text-decoration: underline;
   font-weight: 500;
 }
-.breadcrumb .arrow {
+.sr-breadcrumb .sr-arrow {
   color: #aaa;
 }
 
 /* ---------- HEADER ---------- */
-.search-results-header {
+.sr-header {
   padding-left: 90px;
   margin-bottom: 10px;
   font-size: 1rem;
   color: #333;
 }
-.search-results-header span {
+.sr-header span {
   font-weight: 600;
 }
 
 /* ---------- SEARCH BAR ---------- */
-.search-bar-wrapper1 {
+.sr-search-wrapper {
   width: 100%;
   max-width: 1000px;
   margin: 10px auto 30px;
@@ -52,7 +52,7 @@
   position: relative;
   z-index: 2;
 }
-.search-bar-container1 {
+.sr-search-container {
   border-radius: 40px;
   padding: 10px 16px;
   display: flex;
@@ -61,7 +61,7 @@
   background-color: #fff;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
-.search-box1 {
+.sr-search-box {
   display: flex;
   align-items: center;
   flex: 1.5;
@@ -70,7 +70,7 @@
   border-radius: 30px;
   background-color: #f9f9f9;
 }
-.search-box1 input {
+.sr-search-box input {
   border: none;
   outline: none;
   font-size: 14px;
@@ -79,13 +79,13 @@
   width: 100%;
 }
 
-.date-inline-box {
+.sr-date-inline {
   display: flex;
   align-items: center;
   gap: 6px;
   flex: 1;
 }
-.date-inline-field {
+.sr-date-field {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -93,7 +93,7 @@
   padding: 6px 8px;
   border-radius: 30px;
 }
-.inline-datepicker {
+.sr-datepicker {
   border: none;
   outline: none;
   background: transparent;
@@ -102,7 +102,7 @@
   cursor: pointer;
 }
 
-.search-btn {
+.sr-search-btn {
   background-color: var(--highlight-color, goldenrod);
   color: white;
   padding: 10px 22px;
@@ -116,11 +116,11 @@
   cursor: pointer;
   transition: background 0.3s ease;
 }
-.search-btn:hover {
+.sr-search-btn:hover {
   background-color: var(--primary-dark, #c88a0d);
 }
 
-.error-popup {
+.sr-error-popup {
   position: absolute;
   top: 100%;
   left: 50%;
@@ -138,13 +138,13 @@
 }
 
 /* ---------- LAYOUT ---------- */
-.search-layout {
+.sr-layout {
   display: flex;
   gap: 30px;
   padding: 0 90px;
 }
 
-.search-filters {
+.sr-filters {
   flex: 0 0 240px;
   background: #fff;
   border-radius: 12px;
@@ -152,35 +152,35 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.06);
   font-size: 0.9rem;
 }
-.search-filters h5 {
+.sr-filters h5 {
   font-size: 0.85rem;
   text-transform: uppercase;
   margin-bottom: 10px;
   font-weight: 600;
 }
-.search-filters .range-row {
+.sr-filters .sr-range-row {
   display: flex;
   gap: 10px;
   margin-bottom: 14px;
 }
-.search-filters input[type="number"] {
+.sr-filters input[type="number"] {
   padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   width: 100%;
 }
-.search-filters label {
+.sr-filters label {
   display: block;
   margin-bottom: 10px;
   cursor: pointer;
 }
-.search-filters input[type="checkbox"] {
+.sr-filters input[type="checkbox"] {
   margin-right: 8px;
   accent-color: goldenrod;
 }
 
 /* ---------- DEALS GRID ---------- */
-.deals-grid {
+.sr-deals-grid {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -188,7 +188,7 @@
 }
 
 /* ---------- DEAL CARD ---------- */
-.deal-card {
+.sr-deal-card {
   background: #fff;
   border-radius: 14px;
   overflow: hidden;
@@ -199,24 +199,23 @@
   position: relative;
   height: 400px;
 }
-.deal-card:hover {
+.sr-deal-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
-.deal-image {
+.sr-deal-image {
   height: 220px;
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-/* Wishlist Heart Button */
-.wishlist-btn {
+.sr-wishlist-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background:rgb(60, 4, 4);
+  background: rgb(60, 4, 4);
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -229,8 +228,7 @@
   z-index: 5;
 }
 
-
-.ribbon {
+.sr-ribbon {
   position: absolute;
   top: 14px;
   left: -40px;
@@ -245,32 +243,32 @@
 }
 
 /* Overlay for details */
-.deal-overlay {
+.sr-deal-overlay {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  flex: 1; /* fill remaining space */
-  justify-content: space-between; /* push bottom-row down */
+  flex: 1;
+  justify-content: space-between;
   gap: 6px;
 }
-.deal-overlay h3 {
+.sr-deal-overlay h3 {
   font-size: 1rem;
   margin: 0;
 }
-.deal-overlay .excerpt {
+.sr-deal-overlay .sr-excerpt {
   font-size: 0.85rem;
   color: #555;
   line-height: 1.3;
 }
 
-.bottom-row {
+.sr-bottom-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto; /* stick to bottom */
+  margin-top: auto;
 }
 
-.deal-btn {
+.sr-deal-btn {
   border: 1px solid #333;
   background: transparent;
   padding: 6px 14px;
@@ -279,29 +277,29 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.deal-btn:hover {
+.sr-deal-btn:hover {
   background: goldenrod;
   color: white;
   border-color: goldenrod;
 }
 
-.price-wrap {
+.sr-price-wrap {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-size: 0.85rem;
 }
-.old-price {
+.sr-old-price {
   color: #aaa;
   text-decoration: line-through;
 }
-.new-price {
+.sr-new-price {
   font-weight: 600;
   color: #222;
 }
 
 /* ---------- PAGINATION ---------- */
-.search-pagination {
+.sr-pagination {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -309,19 +307,19 @@
   padding: 20px 90px 50px;
   font-size: 0.95rem;
 }
-.search-pagination .icon-btn {
+.sr-pagination .sr-icon-btn {
   font-size: 1.6rem;
   color: goldenrod;
   cursor: pointer;
   border: none;
   background: transparent;
 }
-.search-pagination .icon-btn:hover {
+.sr-pagination .sr-icon-btn:hover {
   color: #d4a017;
 }
 
 /* ---------- PLACEHOLDERS ---------- */
-.search-placeholder, .no-results {
+.sr-placeholder, .sr-no-results {
   grid-column: 1 / -1;
   text-align: center;
   padding: 40px 0;
@@ -330,49 +328,49 @@
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 1024px) {
-  .deals-grid {
+  .sr-deals-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .search-bar-wrapper1 {
+  .sr-search-wrapper {
     padding: 0 20px;
   }
-  .search-bar-container1 {
+  .sr-search-container {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
   }
-  .search-box1,
-  .date-inline-box,
-  .search-btn {
+  .sr-search-box,
+  .sr-date-inline,
+  .sr-search-btn {
     flex: unset;
     width: 100%;
   }
-  .date-inline-box {
+  .sr-date-inline {
     flex-direction: column;
     gap: 8px;
   }
 
-  .search-layout {
+  .sr-layout {
     flex-direction: column;
     padding: 0 20px;
   }
 
-  .deals-grid {
+  .sr-deals-grid {
     grid-template-columns: 1fr;
   }
 
-  .deal-card {
-    height: auto; /* allow card to expand */
+  .sr-deal-card {
+    height: auto;
   }
-  .deal-overlay {
-    flex: unset; /* remove flex fill on mobile */
+  .sr-deal-overlay {
+    flex: unset;
     justify-content: normal;
   }
 
-  .search-pagination {
+  .sr-pagination {
     justify-content: center;
     padding: 20px 20px 40px;
   }

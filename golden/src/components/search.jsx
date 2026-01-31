@@ -98,11 +98,6 @@ export default function Search() {
     }
   };
 
-  useEffect(() => {
-    if (shouldSearch) fetchDeals();
-    else setResults([]);
-  }, [startDate, endDate, filters.sale, filters.styles.length, filters.themes.length, searchQuery, regionId]);
-
   const norm = (v = "") => v.toLowerCase().trim();
 
   const { styleList, styleCount, themeList, themeCount } = useMemo(() => {
@@ -198,23 +193,23 @@ export default function Search() {
   };
 
   return (
-    <section className="search-results-page">
-      <div className="breadcrumb">
+    <section className="sr-page">
+      <div className="sr-breadcrumb">
         <Link to="/">Home</Link>
-        <span className="arrow">›</span>
+        <span className="sr-arrow">›</span>
         <span>Search</span>
       </div>
 
-      <h2 className="search-results-header">
+      <h2 className="sr-header">
         Showing <span>{filteredResults.length}</span> trip{filteredResults.length !== 1 ? "s" : ""}{" "}
         {regionName ? `in ${regionName}` : "matching your search"}
       </h2>
 
       {/* --- Search Bar --- */}
-      <div className="search-bar-wrapper1">
-        <div className="search-bar-container1">
-          <div className="search-box1">
-            <MapPin size={18} className="icon" />
+      <div className="sr-search-wrapper">
+        <div className="sr-search-container">
+          <div className="sr-search-box">
+            <MapPin size={18} className="sr-icon" />
             <input
               type="text"
               placeholder="Search destination, trip name..."
@@ -223,40 +218,40 @@ export default function Search() {
             />
           </div>
 
-          <div className="date-inline-box">
-            <div className="date-inline-field">
-              <Calendar size={16} className="calendar-icon" />
+          <div className="sr-date-inline">
+            <div className="sr-date-field">
+              <Calendar size={16} className="sr-calendar-icon" />
               <DatePicker
                 selected={startDate}
                 onChange={onStartDateChange}
                 placeholderText="Start date"
-                className="inline-datepicker"
+                className="sr-datepicker"
                 minDate={new Date()}
                 onKeyDown={(e) => e.preventDefault()}
               />
             </div>
 
-            <div className="date-inline-field end-date-wrapper">
-              <Calendar size={16} className="calendar-icon" />
+            <div className="sr-date-field sr-end-date">
+              <Calendar size={16} className="sr-calendar-icon" />
               <DatePicker
                 selected={endDate}
                 onChange={onEndDateChange}
                 onCalendarOpen={onEndCalendarOpen}
                 placeholderText="End date"
-                className="inline-datepicker"
+                className="sr-datepicker"
                 minDate={startDate || new Date()}
                 onKeyDown={(e) => e.preventDefault()}
               />
             </div>
           </div>
 
-          <button className="search-btn" onClick={fetchDeals}>
+          <button className="sr-search-btn" onClick={fetchDeals}>
             <SearchIcon size={16} /> Search
           </button>
         </div>
 
         {endDateError && (
-          <div className="error-popup" role="alert">
+          <div className="sr-error-popup" role="alert">
             <AlertCircle size={16} />
             <span>{endDateError}</span>
           </div>
@@ -264,55 +259,54 @@ export default function Search() {
       </div>
 
       {/* --- Filters & Results --- */}
-      <div className="search-layout">
-        <aside className="search-filters">
+      <div className="sr-layout">
+        <aside className="sr-filters">
           <h5>Duration (Days)</h5>
-          <div className="range-row">
+          <div className="sr-range-row">
             <input type="number" placeholder="Min" value={filters.durationMin} onChange={(e) => updateFilter("durationMin", e.target.value)} min={0} />
             <input type="number" placeholder="Max" value={filters.durationMax} onChange={(e) => updateFilter("durationMax", e.target.value)} min={0} />
           </div>
 
           <h5>Price</h5>
-          <div className="range-row">
+          <div className="sr-range-row">
             <input type="number" placeholder="$ Min" value={filters.priceMin} onChange={(e) => updateFilter("priceMin", e.target.value)} min={0} />
             <input type="number" placeholder="$ Max" value={filters.priceMax} onChange={(e) => updateFilter("priceMax", e.target.value)} min={0} />
           </div>
 
           <h5>Travel Deals</h5>
-          <label className="checkbox-label">
+          <label className="sr-checkbox-label">
             <input type="checkbox" checked={filters.sale} onChange={() => updateFilter("sale")} />
             Trips on sale
           </label>
 
           {styleList.length > 0 && <h5>Styles</h5>}
           {styleList.map((style) => (
-            <label key={style} className="checkbox-label">
+            <label key={style} className="sr-checkbox-label">
               <input type="checkbox" checked={filters.styles.includes(style)} onChange={() => updateFilter("styles", style)} />
-              {style.charAt(0).toUpperCase() + style.slice(1)} <span className="count">({styleCount[style]})</span>
+              {style.charAt(0).toUpperCase() + style.slice(1)} <span className="sr-count">({styleCount[style]})</span>
             </label>
           ))}
 
           {themeList.length > 0 && <h5>Themes</h5>}
           {themeList.map((theme) => (
-            <label key={theme} className="checkbox-label">
+            <label key={theme} className="sr-checkbox-label">
               <input type="checkbox" checked={filters.themes.includes(theme)} onChange={() => updateFilter("themes", theme)} />
-              {theme.charAt(0).toUpperCase() + theme.slice(1)} <span className="count">({themeCount[theme]})</span>
+              {theme.charAt(0).toUpperCase() + theme.slice(1)} <span className="sr-count">({themeCount[theme]})</span>
             </label>
           ))}
         </aside>
 
-        <div className="deals-grid">
+        <div className="sr-deals-grid">
           {!shouldSearch ? (
-            <p className="search-placeholder">Start typing or select a region to search for trips.</p>
+            <p className="sr-placeholder">Start typing or select a region to search for trips.</p>
           ) : paginatedResults.length > 0 ? (
             paginatedResults.map((result, i) => (
-              <div className="deal-card" key={result.id} style={{ "--i": i }}>
-                <div className="deal-image" style={{ backgroundImage: `url(${result.image || "https://via.placeholder.com/300"})` }}>
-                  {result.on_sale && <div className="ribbon">ON SALE</div>}
+              <div className="sr-deal-card" key={result.id} style={{ "--i": i }}>
+                <div className="sr-deal-image" style={{ backgroundImage: `url(${result.image || "https://via.placeholder.com/300"})` }}>
+                  {result.on_sale && <div className="sr-ribbon">ON SALE</div>}
 
-                  {/* Wishlist heart */}
                   <button
-                    className="wishlist-btn"
+                    className="sr-wishlist-btn"
                     onClick={() => toggleWishlist(result.id)}
                     aria-label="Add to wishlist"
                   >
@@ -320,38 +314,38 @@ export default function Search() {
                   </button>
                 </div>
 
-                <div className="deal-overlay sc">
+                <div className="sr-deal-overlay">
                   <h3>{result.title}</h3>
-                  <p className="excerpt">{truncateText(result.description, 80)}</p>
-                  <div className="bottom-row">
+                  <p className="sr-excerpt">{truncateText(result.description, 80)}</p>
+                  <div className="sr-bottom-row">
                     <button
-                      className="deal-btn small"
+                      className="sr-deal-btn"
                       onClick={() =>
                         navigate(`/destinations/${result.country?.slug || "unknown"}/deal/${slugify(result.title)}`)
                       }
                     >
                       See Details
                     </button>
-                    <div className="price-wrap">
-                      <span className="old-price">${Number(result.price) + 400}</span>
-                      <span className="new-price">${result.price}</span>
+                    <div className="sr-price-wrap">
+                      <span className="sr-old-price">${Number(result.price) + 400}</span>
+                      <span className="sr-new-price">${result.price}</span>
                     </div>
                   </div>
                 </div>
               </div>
             ))
           ) : (
-            <p className="no-results">No trips found matching your criteria.</p>
+            <p className="sr-no-results">No trips found matching your criteria.</p>
           )}
         </div>
       </div>
 
       {/* Pagination */}
       {filteredResults.length > 0 && (
-        <div className="search-pagination">
-          <button className="icon-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label="Previous page">◀</button>
+        <div className="sr-pagination">
+          <button className="sr-icon-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label="Previous page">◀</button>
           <span>Page {page} of {Math.ceil(filteredResults.length / perPage) || 1}</span>
-          <button className="icon-btn" onClick={() => setPage((p) => Math.min(Math.ceil(filteredResults.length / perPage), p + 1))} disabled={page >= Math.ceil(filteredResults.length / perPage)} aria-label="Next page">▶</button>
+          <button className="sr-icon-btn" onClick={() => setPage((p) => Math.min(Math.ceil(filteredResults.length / perPage), p + 1))} disabled={page >= Math.ceil(filteredResults.length / perPage)} aria-label="Next page">▶</button>
         </div>
       )}
     </section>

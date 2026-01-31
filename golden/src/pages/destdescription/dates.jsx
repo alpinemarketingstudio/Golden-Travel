@@ -62,6 +62,7 @@ export default function Dates({ data }) {
     <div className="dates-container">
       <h2 className="dates-title">Dates and Availability</h2>
 
+      {/* Filters */}
       <div className="dates-filters">
         <select className="filter-dropdown" value={filterMonth} onChange={(e) => setFilterMonth(e.target.value)}>
           <option>All Months</option>
@@ -78,6 +79,7 @@ export default function Dates({ data }) {
         </select>
       </div>
 
+      {/* Date Cards */}
       {sortedDates.slice(0, visibleCount).map((item) => (
         <div className="date-card fade-in" key={item.id}>
           <div className="date-left">
@@ -115,11 +117,6 @@ export default function Dates({ data }) {
               <span className="discounted-price">${item.discounted_price}</span>
             </div>
 
-            <select className="payment-select">
-              <option>Payment Plan</option>
-              <option>Full Payment</option>
-            </select>
-
             {item.capacity === 0 ? (
               <div className="sold-out-text">Sold Out</div>
             ) : (
@@ -145,6 +142,7 @@ export default function Dates({ data }) {
         </div>
       ))}
 
+      {/* View More / Less */}
       {sortedDates.length > initialVisibleCount && (
         <div className="view-more-wrapper">
           <button className="view-more-btn" onClick={handleToggle}>

@@ -49,11 +49,9 @@ export default function Desc({ data, onViewDatesClick }) {
 
     try {
       if (wishId) {
-        // Remove from wishlist
         await axiosInstance.delete(`/destinations/wishlist/${wishId}/`);
         setWishId(null);
       } else {
-        // Add to wishlist
         const res = await axiosInstance.post("/destinations/wishlist/", {
           deal: data.id,
         });
@@ -89,6 +87,10 @@ export default function Desc({ data, onViewDatesClick }) {
     }
   };
 
+  const openImage = (src) => {
+    window.open(src, "_blank"); // Simple: open image in new tab
+  };
+
   return (
     <section className="trip-section">
       <div className="trip-header">
@@ -97,15 +99,13 @@ export default function Desc({ data, onViewDatesClick }) {
           <strong>{data.days} days</strong>
           <div className="rating-row">
             {renderStars(rating)}
-            <span className="review-count">
-              {rating.toFixed(1)} ({data.review_count || 0} reviews)
-            </span>
-            <button
-              className="leave-review-btn"
+            <span
+              className="review-count"
+              style={{ cursor: "pointer", textDecoration: "underline" }}
               onClick={scrollToReviewSection}
             >
-              Leave a Review
-            </button>
+              {rating.toFixed(1)} ({data.review_count || 0} reviews)
+            </span>
           </div>
           · {data.country?.name || "Unknown"}
         </p>
@@ -116,12 +116,24 @@ export default function Desc({ data, onViewDatesClick }) {
         <div className="trip-gallery">
           <div className="top-gallery">
             {data.gallery?.slice(0, 2).map((img, i) => (
-              <img key={i} src={img.image} alt={`${data.title} ${i + 1}`} />
+              <img
+                key={i}
+                src={img.image}
+                alt={`${data.title} ${i + 1}`}
+                onClick={() => openImage(img.image)}
+                style={{ cursor: "pointer" }}
+              />
             ))}
           </div>
           <div className="bottom-imgs">
             {data.gallery?.slice(2, 5).map((img, i) => (
-              <img key={i} src={img.image} alt={`${data.title} ${i + 3}`} />
+              <img
+                key={i}
+                src={img.image}
+                alt={`${data.title} ${i + 3}`}
+                onClick={() => openImage(img.image)}
+                style={{ cursor: "pointer" }}
+              />
             ))}
             <div className="testimonial">
               <p>“The guide was exceptional, and the trip was well organized.”</p>

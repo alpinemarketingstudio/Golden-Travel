@@ -245,7 +245,7 @@ label .count {
 .deal-overlay.sc {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent 100%);
   padding: 16px 16px 20px;
-  color: #fff;
+  color: black;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -332,7 +332,7 @@ label .count {
 .old-price {
   font-size: 0.8rem;
   text-decoration: line-through;
-  color: rgba(255, 255, 255, 0.7);
+  color: red;
 }
 
 .new-price {

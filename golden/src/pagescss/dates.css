@@ -26,7 +26,8 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* keep same line */
+  align-items: center;
 }
 
 .filter-dropdown,
@@ -143,17 +144,6 @@
   color: var(--text-color);
 }
 
-.payment-select {
-  margin-top: 4px;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  width: 100%;
-  font-family: inherit;
-  background: transparent;
-}
-
 .confirm-btn {
   background-color: var(--highlight-color);
   color: white;
@@ -243,6 +233,11 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .dates-filters {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
   .date-card {
     flex-direction: column;
     gap: 16px;

@@ -386,7 +386,7 @@ export default function DealsSection({ data = {} }) {
 
       {/* View More */}
       {filtered.length > INITIAL_VISIBLE && (
-        <div className="view-more-wrapper">
+        <div className="view-more-wrapper"> 
           <button
             className="view-more-btn"
             onClick={() => {

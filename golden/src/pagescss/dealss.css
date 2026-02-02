@@ -172,13 +172,13 @@ label .count {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 350px;
+  height: 500px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
-  width: 300px;
+  width: 350px;
 }
 
 .deal-card:hover {
@@ -243,8 +243,8 @@ label .count {
 
 /* === OVERLAY CONTENT === */
 .deal-overlay.sc {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent 100%);
-  padding: 16px 16px 20px;
+  background: #f2f2f2;
+  padding: 16px 16px 20px; 
   color: black;
   display: flex;
   flex-direction: column;
@@ -304,8 +304,8 @@ label .count {
 /* Buttons */
 .deal-btn.small {
   background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.9);
-  color: #fff;
+  border: 1.5px solid black;
+  color: black;
   font-weight: 300;
   font-size: 0.9rem;
   padding: 6px 18px;
@@ -338,7 +338,7 @@ label .count {
 .new-price {
   font-size: 0.9rem;
   font-weight: 300;
-  color: #fff;
+  color: black;
 }
 
 /* View More Button */

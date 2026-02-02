@@ -13,7 +13,7 @@ import "../../pagescss/dealss.css";
 const INITIAL_VISIBLE = 3;
  
 const slugify = (str) =>
-  str
+  str 
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");

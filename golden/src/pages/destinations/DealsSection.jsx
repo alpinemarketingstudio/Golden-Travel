@@ -13,7 +13,7 @@ import "../../pagescss/dealss.css";
 const INITIAL_VISIBLE = 3;
  
 const slugify = (str) =>
-  str 
+  str
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
@@ -314,7 +314,7 @@ export default function DealsSection({ data = {} }) {
           {display.length > 0 ? (
             display.map((d, i) => {
               const priceNum = parseInt(d.price.replace(/[^0-9]/g, "") || "0", 10);
-              const oldPrice = `$${(priceNum ).toLocaleString()}`;
+              const oldPrice = `$${(priceNum + 500).toLocaleString()}`;
 
               const isLoading = loadingWishIds.has(d.id);
 

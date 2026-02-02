@@ -295,7 +295,7 @@ export default function Search() {
             </label>
           ))}
         </aside>
-
+ 
         <div className="sr-deals-grid">
           {!shouldSearch ? (
             <p className="sr-placeholder">Start typing or select a region to search for trips.</p>

@@ -70,7 +70,7 @@
 /* ───── Image + play icon ───── */
 .why-golden-image img {
   width: 100%;
-  height: auto;
+  height: 300px;
   border-radius: var(--radius);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   object-fit: cover;

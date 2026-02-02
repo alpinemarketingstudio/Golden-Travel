@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { Link } from "react-router-dom";
 import {
   FaFacebookF,
   FaTwitter,
@@ -24,7 +25,10 @@ export default function Footer() {
     }
 
     try {
-      const response = await axiosInstance.post("accounts/newsletter/subscribe/", { email });
+      const response = await axiosInstance.post(
+        "accounts/newsletter/subscribe/",
+        { email }
+      );
       setMessage(response.data.message || "Thank you for subscribing!");
       setIsError(false);
       setEmail("");
@@ -104,7 +108,8 @@ export default function Footer() {
               </p>
             )}
             <p className="policy-note">
-              By subscribing, you agree to our Privacy Policy and consent to receive updates.
+              By subscribing, you agree to our{" "}
+              <Link to="/privacy">Privacy Policy</Link> and consent to receive updates.
             </p>
           </form>
         </div>
@@ -113,9 +118,9 @@ export default function Footer() {
       <div className="footer-bottom">
         <p>© {new Date().getFullYear()} Golden Travels. All rights reserved.</p>
         <div className="footer-links-inline">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Cookie Policy</a>
+          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/terms">Terms of Service</Link>
+          <Link to="/cookies">Cookie Policy</Link>
         </div>
       </div>
     </footer>

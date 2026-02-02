@@ -50,6 +50,9 @@ import Write from "./pages/write";
 // Search Page
 import Search from "./components/search";
 
+// Privacy Policy Page
+import PrivacyPolicy from "./components/privacy";
+
 // Payment pages
 import Payment1 from "./payment/payment1";
 import Payment2 from "./payment/payment2";
@@ -66,6 +69,7 @@ import { ToastContainer } from "react-toastify";
 function UserLayout() {
   const location = useLocation();
 
+  // Routes where layout (Navbar/Footer) is hidden
   const noLayoutRoutes = [
     "/login",
     "/register",
@@ -83,6 +87,7 @@ function UserLayout() {
     matchPath({ path, end: false }, location.pathname)
   );
 
+  // Auth and payment paths for hiding chatbot
   const authRoutes = [
     "/login",
     "/register",
@@ -137,6 +142,9 @@ function UserLayout() {
         {/* About Us */}
         <Route path="/about" element={<AboutUs />} />
         <Route path="/destinations/aboutus" element={<OurStory />} />
+
+        {/* Privacy Policy */}
+        <Route path="/privacy" element={<PrivacyPolicy />} />
 
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />

@@ -1,0 +1,116 @@
+.privacy-policy-page {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.hero-overlay {
+  color: #fff;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.hero-overlay h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero-overlay p {
+  font-size: 1.2rem;
+}
+
+/* Policy Sections */
+.policy-section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Container for each policy item */
+.policy-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.policy-container.reverse {
+  flex-direction: row-reverse;
+}
+
+/* Icon for each policy */
+.policy-icon {
+  flex: 0 0 60px; /* fixed width for icons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.policy-icon svg {
+  width: 60px;
+  height: 60px;
+}
+
+/* Text for each policy */
+.policy-text {
+  flex: 1;
+  min-width: 250px;
+}
+
+.policy-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.policy-text p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.policy-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Full width section */
+.full-width {
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .policy-container,
+  .policy-container.reverse {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .policy-icon {
+    margin-bottom: 15px;
+  }
+}

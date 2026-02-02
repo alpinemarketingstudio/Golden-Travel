@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/roof.css";
-import img2 from "../assets/img2.jpg";
+import girl from "../assets/kumari.webp";
 
 export default function Roof() {
   return (
@@ -28,7 +28,7 @@ export default function Roof() {
 
         {/* Image section */}
         <div className="roof-img-wrapper">
-          <img src={img2} alt="Traveler" className="roof-img" />
+          <img src={girl} alt="Traveler" className="roof-img" />
         </div>
       </div>
     </section>

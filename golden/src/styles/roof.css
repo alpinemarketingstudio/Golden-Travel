@@ -2,7 +2,7 @@
 .roof-section {
   position: relative;
   height: 100vh;
-  background-image: url("../assets/bali.jpg");
+  background-image: url("../assets/mountain.avif");
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
@@ -90,7 +90,7 @@
 }
 
 .roof-img {
-  width: 380px;
+  width: 270px;
   height: 300px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);

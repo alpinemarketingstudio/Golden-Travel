@@ -51,15 +51,15 @@
   margin: 0 auto 2.5rem;
 }
 
-/* ========== SEARCH BAR ========== */
+/* ========== SEARCH WRAPPER ========== */
 .home-search-wrapper {
   position: relative;
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
-  margin-top: 150px;
+  margin: 150px auto 0;
 }
 
+/* Search bar */
 .home-search-bar {
   display: flex;
   align-items: center;
@@ -70,31 +70,72 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Search input */
+/* ========== LOCATION INPUT ========== */
 .home-search-input {
+  position: relative;
   display: flex;
   align-items: center;
   flex: 1.5;
-  gap: 6px;
 }
 
+/* Permanent location icon */
+.home-location-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  pointer-events: none;
+}
+
+/* Input */
 .home-search-input input {
+  width: 100%;
+  padding: 12px 14px 12px 42px; /* space for icon */
   border: none;
   outline: none;
   background: transparent;
   font-size: 14px;
   color: #333;
-  width: 100%;
 }
 
-/* Divider between sections */
+/* ========== SUGGESTIONS ========== */
+.home-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 8px;
+  color: #333;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+  list-style: none;
+  padding: 6px 0;
+}
+
+.home-suggestions li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.home-suggestions li:hover {
+  background: #f5f5f5;
+}
+
+/* Divider */
 .home-divider {
   width: 1px;
   height: 32px;
   background-color: #ccc;
 }
 
-/* Date section */
+/* ========== DATE SECTION ========== */
 .home-date-box {
   display: flex;
   align-items: center;
@@ -120,15 +161,16 @@
   font-size: 14px;
   color: #333;
   cursor: pointer;
+  width: 100%;
 }
 
-/* Separator */
+/* Date separator */
 .home-date-separator {
   color: #999;
   user-select: none;
 }
 
-/* Search Button */
+/* ========== SEARCH BUTTON ========== */
 .home-search-btn {
   background-color: #ddb148;
   color: white;
@@ -148,7 +190,7 @@
   background-color: #c19a46;
 }
 
-/* Error message */
+/* ========== ERROR MESSAGE ========== */
 .home-error {
   position: absolute;
   top: 110%;
@@ -200,6 +242,10 @@
   .home-divider,
   .home-date-separator {
     display: none;
+  }
+
+  .home-suggestions {
+    max-width: 100%;
   }
 
   .home-search-btn {

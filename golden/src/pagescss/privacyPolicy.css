@@ -1,21 +1,24 @@
-.privacy-policy-page {
+/* ====== PAGE CONTAINER ====== */
+.privacy-policy-new-page {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
+  background-color: #f9f9f9; /* light grey background */
+  line-height: 1.8; /* slightly more spacing for readability */
 }
 
-/* Hero Section */
-.hero {
+/* ====== HERO SECTION ====== */
+.hero-new {
   position: relative;
   width: 100%;
-  height: 40vh;
-  overflow: hidden;
+  height: 45vh; /* slightly taller hero */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
 }
 
-.hero-image {
+.hero-image-new {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -23,94 +26,151 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 0;
 }
 
-.hero-overlay {
+.hero-overlay-new {
+  position: relative;
+  z-index: 1;
   color: #fff;
-  max-width: 800px;
+  max-width: 900px; /* slightly wider overlay */
   padding: 0 20px;
 }
 
-.hero-overlay h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
+.hero-overlay-new h1 {
+  font-size: 4rem; /* increased hero title */
+  margin-bottom: 20px; /* more vertical gap */
 }
 
-.hero-overlay p {
-  font-size: 1.2rem;
+.hero-overlay-new p {
+  font-size: 1.5rem; /* bigger subtitle */
+  margin-bottom: 0; 
 }
 
-/* Policy Sections */
-.policy-section {
-  padding: 60px 20px;
+/* ====== POLICY SECTION ====== */
+.policy-section-new {
+  padding: 80px 60px; /* more spacing top & bottom */
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Container for each policy item */
-.policy-container {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 60px;
-  flex-wrap: wrap;
+.policy-content-new h2 {
+  font-size: 2.5rem; /* bigger main section title */
+  margin-bottom: 25px; /* more space below */
 }
 
-.policy-container.reverse {
-  flex-direction: row-reverse;
+.policy-content-new h3 {
+  font-size: 2rem; /* bigger sub-section titles */
+  margin-top: 35px; /* more vertical space above */
+  margin-bottom: 20px; /* more space below */
 }
 
-/* Icon for each policy */
-.policy-icon {
-  flex: 0 0 60px; /* fixed width for icons */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.policy-content-new p,
+.policy-content-new ul {
+  font-size: 1.1rem; /* slightly bigger text */
+  line-height: 1.8; /* more line spacing */
+  margin-bottom: 20px; /* increased spacing between paragraphs */
 }
 
-.policy-icon svg {
-  width: 60px;
-  height: 60px;
+.policy-content-new ul {
+  padding-left: 25px;
 }
 
-/* Text for each policy */
-.policy-text {
-  flex: 1;
-  min-width: 250px;
-}
-
-.policy-text h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: #1a1a1a;
-}
-
-.policy-text p {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.policy-text a {
+.policy-content-new a {
   color: #007bff;
   text-decoration: none;
 }
 
-/* Full width section */
-.full-width {
-  width: 100%;
-  text-align: center;
+.policy-content-new a:hover {
+  text-decoration: underline;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .policy-container,
-  .policy-container.reverse {
-    flex-direction: column;
-    text-align: center;
+/* ====== MEDIA QUERIES ====== */
+@media (max-width: 1024px) {
+  .hero-overlay-new h1 {
+    font-size: 3.5rem;
   }
 
-  .policy-icon {
-    margin-bottom: 15px;
+  .hero-overlay-new p {
+    font-size: 1.3rem;
+  }
+
+  .policy-section-new {
+    padding: 60px 40px;
+  }
+
+  .policy-content-new h2 {
+    font-size: 2.2rem;
+  }
+
+  .policy-content-new h3 {
+    font-size: 1.8rem;
+  }
+
+  .policy-content-new p,
+  .policy-content-new ul {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-new {
+    height: 35vh;
+  }
+
+  .hero-overlay-new h1 {
+    font-size: 2.8rem;
+  }
+
+  .hero-overlay-new p {
+    font-size: 1.2rem;
+  }
+
+  .policy-section-new {
+    padding: 50px 25px;
+  }
+
+  .policy-content-new h2 {
+    font-size: 2rem;
+  }
+
+  .policy-content-new h3 {
+    font-size: 1.6rem;
+  }
+
+  .policy-content-new p,
+  .policy-content-new ul {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-new {
+    height: 30vh;
+  }
+
+  .hero-overlay-new h1 {
+    font-size: 2rem;
+  }
+
+  .hero-overlay-new p {
+    font-size: 1rem;
+  }
+
+  .policy-section-new {
+    padding: 40px 15px;
+  }
+
+  .policy-content-new h2 {
+    font-size: 1.8rem;
+  }
+
+  .policy-content-new h3 {
+    font-size: 1.4rem;
+  }
+
+  .policy-content-new p,
+  .policy-content-new ul {
+    font-size: 0.95rem;
   }
 }

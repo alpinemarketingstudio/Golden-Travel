@@ -50,8 +50,9 @@ import Write from "./pages/write";
 // Search Page
 import Search from "./components/search";
 
-// Privacy Policy Page
+// Privacy Policy & Terms
 import PrivacyPolicy from "./components/privacy";
+import Terms from "./components/terms";
 
 // Payment pages
 import Payment1 from "./payment/payment1";
@@ -143,8 +144,9 @@ function UserLayout() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/destinations/aboutus" element={<OurStory />} />
 
-        {/* Privacy Policy */}
+        {/* Privacy Policy & Terms */}
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
 
         {/* Auth Routes */}
         <Route path="/login" element={<Login />} />

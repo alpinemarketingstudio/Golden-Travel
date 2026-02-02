@@ -22,7 +22,6 @@ const ForgotPassword = () => {
       );
       toast.success(response.data.message || "OTP sent to your email!");
       localStorage.setItem("reset_email", email);
-      // Navigate to verify-otp page WITH ?mode=reset query param
       setTimeout(() => navigate("/verify-otp?mode=reset"), 1000);
     } catch (error) {
       toast.error(
@@ -36,10 +35,12 @@ const ForgotPassword = () => {
   return (
     <div className="fp-container">
       <div className="fp-wrapper">
+        {/* Left Image */}
         <div className="fp-image">
           <img src={beachImage} alt="Forgot Password Visual" />
         </div>
 
+        {/* Right Card */}
         <div className="fp-card">
           <h2 className="fp-title">Reset Password</h2>
 
@@ -73,8 +74,9 @@ const ForgotPassword = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder=" " // important for floating label
               />
-              <label className={email ? "active" : ""}>Email Address</label>
+              <label>Email Address</label>
             </div>
 
             <button type="submit" disabled={loading}>

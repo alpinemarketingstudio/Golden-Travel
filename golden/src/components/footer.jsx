@@ -119,8 +119,7 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} Golden Travels. All rights reserved.</p>
         <div className="footer-links-inline">
           <Link to="/privacy">Privacy Policy</Link>
-          <Link to="/terms">Terms of Service</Link>
-          <Link to="/cookies">Cookie Policy</Link>
+          <Link to="/terms">Terms of Use</Link>
         </div>
       </div>
     </footer>

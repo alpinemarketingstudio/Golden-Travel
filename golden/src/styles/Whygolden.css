@@ -1,7 +1,7 @@
 /* ───── Section wrapper (“card”) ───── */
 .why-golden-section {
   margin: 0 auto;
-  padding: 80px 50px 100px;
+  padding: 80px 100px 100px;
   background: var(--bg-color);
   font-family: var(--font-family);
 }

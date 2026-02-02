@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/Whygolden.css";
-import img2 from "../assets/217870.jpg";
+import img2 from "../assets/whyphoto.avif";
 import { useNavigate } from "react-router-dom";
 
 import { GoPeople } from "react-icons/go";
@@ -40,7 +40,7 @@ export default function WhyGolden() {
             className="read-more-btn"
             onClick={() => navigate("/about")}
           >
-            Read More About Our Story
+            Read More About Our Story 
           </button>
         </div> 
 

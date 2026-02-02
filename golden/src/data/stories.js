@@ -1,29 +1,33 @@
 // src/data/stories.js
-import img2 from "../assets/img2.jpg";
+import japnese from "../assets/japnese.jpg";
+import american from "../assets/american.jpg";
+import italy from "../assets/italy.webp";
 
-const stories = [
+const storiesData = [
   {
-    name: "Anjali Sharma",
-    location: "Kathmandu, Nepal",
-    photo: img2,
+    id: 1,
+    name: "Emily Johnson",
+    location: "New York, USA",
     message:
-      "Golden Travels made my dream trip come true! The attention to detail and local experience was simply unmatched. Highly recommend!",
+      "This trip completely changed how I see the world. Everything was perfectly planned, and the local experiences were unforgettable.",
+    photo: american,
   },
   {
-    name: "Rajiv Basnet",
-    location: "Pokhara, Nepal",
-    photo: img2,
+    id: 2,
+    name: "Luca Romano",
+    location: "Rome, Italy",
     message:
-      "A memorable journey filled with culture, nature, and warmth. The team at Golden Travels ensured every moment was perfect.",
+      "From start to finish, it felt like a dream. The guides were knowledgeable and incredibly friendly. Highly recommended!",
+    photo: italy,
   },
   {
-    name: "Maya Gurung",
-    location: "Chitwan, Nepal",
-    photo: img2,
+    id: 3,
+    name: "Aiko Tanaka",
+    location: "Tokyo, Japan",
     message:
-      "Traveling with Golden was a smooth and delightful experience. Their sustainable tourism approach really impressed me.",
+      "I loved every moment of this journey. It was safe, well-organized, and full of beautiful memories I’ll cherish forever.",
+    photo: japnese,
   },
 ];
 
-export default stories;
- 
+export default storiesData;

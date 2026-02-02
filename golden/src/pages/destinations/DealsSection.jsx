@@ -314,7 +314,7 @@ export default function DealsSection({ data = {} }) {
           {display.length > 0 ? (
             display.map((d, i) => {
               const priceNum = parseInt(d.price.replace(/[^0-9]/g, "") || "0", 10);
-              const oldPrice = `$${(priceNum + 500).toLocaleString()}`;
+              const oldPrice = `$${(priceNum ).toLocaleString()}`;
 
               const isLoading = loadingWishIds.has(d.id);
 

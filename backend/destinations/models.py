@@ -111,6 +111,13 @@ class TravelDeal(models.Model):
 
     discount_percent = models.CharField(max_length=10, blank=True, null=True, help_text="e.g. '10%' for deal-wide discount")
 
+    brochure = models.FileField(
+        upload_to="deals/brochures/",
+        null=True,
+        blank=True,
+        help_text="Upload a PDF brochure for this travel deal"
+    )
+
     # Stored as JSON string, accessed via properties below
     included_json = models.TextField(blank=True, default='[]')
     not_included_json = models.TextField(blank=True, default='[]')

@@ -1,70 +1,114 @@
-.why-section {
-  padding: 60px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+.why-golden-section {
+  width: 100%;
+  padding: 60px 0;
+  background-color: #f2f2f2; 
 }
-
-.why-title {
+.why-golden-container,
+.why-golden-header,
+.feature-wrapper {
+  padding-left: 8vw;  
+  padding-right: 8vw;
+}
+.why-golden-title {
   font-size: 2rem;
   font-weight: 500;
-  margin-bottom: 30px;
-  position: relative;
+  margin-bottom: 5px;
 }
 
-.why-title::after {
-  content: "";
-  display: block;
+.why-golden-underline {
   width: 60px;
   height: 4px;
-  background-color: orange;
-  margin-top: 10px;
+  background-color: orange; 
+  margin-bottom: 30px;
 }
 
-/* Always 2 columns (2x2 layout) */
-.why-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
+.why-golden-container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
-/* Stack to 1 column on small screens */
-@media (max-width: 600px) {
-  .why-grid {
-    grid-template-columns: 1fr;
-  }
+.why-golden-text {
+  flex: 1;
 }
 
-.why-card {
-  background: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  transition: transform 0.3s ease;
+.why-golden-image {
+  flex: 1;
 }
 
-.why-card:hover {
-  transform: translateY(-5px);
-}
-
-.why-img {
+.why-golden-image img {
   width: 100%;
-  height: 350px;
+  height: auto;
+  border-radius: 4px;
   object-fit: cover;
 }
 
-.why-content {
-  padding: 15px;
+/* Feature Cards Layout */
+.why-golden-features {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.why-content h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 10px;
+.feature-box {
+  flex: 1;
+  padding: 20px;
+  border-top: 2px solid #eee; /* Your decorative line style */
 }
 
-.why-content p {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #444;
+/* --- Mobile Specific Adjustments --- */
+
+@media (max-width: 992px) {
+  /* Stack Text and Image */
+  .why-golden-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .why-golden-underline {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Grid for features on Tablet (2x2) */
+  .why-golden-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Full stack for mobile (1 column) */
+  .why-golden-features {
+    grid-template-columns: 1fr;
+  }
+
+  .why-golden-title {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .why-golden-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .feature-box {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .feature-header {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .read-more-btn {
+    width: 100%; /* Easier to tap on mobile */
+    padding: 15px;
+  }
 }

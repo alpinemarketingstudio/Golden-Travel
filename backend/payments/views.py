@@ -12,11 +12,55 @@ from django.http import HttpResponse, Http404
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from destinations.models import TravelDealDate
-from .models import Booking, BookingLocation
+from .models import Booking, BookingLocation, Coupon
 from .serializers import BookingSerializer, BookingLocationSerializer
 from .emails import send_booking_success_email, send_booking_cancellation_email
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+class ApplyCouponAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, booking_id):
+        code = request.data.get("code")
+        if not code:
+            return Response({"error": "Coupon code is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            booking = Booking.objects.get(id=booking_id, user=request.user)
+        except Booking.DoesNotExist:
+            return Response({"error": "Booking not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if booking.payment_status == "paid":
+            return Response({"error": "Coupon cannot be applied after payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            coupon = Coupon.objects.get(code__iexact=code)
+        except Coupon.DoesNotExist:
+            return Response({"error": "Invalid coupon code"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not coupon.is_valid():
+            return Response({"error": "Coupon expired or no longer valid"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Calculate discount
+        if coupon.discount_type == "percentage":
+            discount = (coupon.discount_value / 100) * booking.payment_amount
+        else:
+            discount = coupon.discount_value
+        discount = min(discount, booking.payment_amount)
+
+        # Apply coupon
+        booking.coupon = coupon
+        booking.discount_amount = discount
+        booking.payment_amount -= discount
+        booking.save(update_fields=["coupon", "discount_amount", "payment_amount"])
+
+        return Response({
+            "message": "Coupon applied successfully",
+            "coupon": coupon.code,
+            "discount_amount": float(discount),
+            "final_amount": float(booking.payment_amount),
+        }, status=status.HTTP_200_OK)
 
 # --------------------------
 # Booking CRUD Views
@@ -106,6 +150,10 @@ class BookingPaymentUpdateAPIView(generics.UpdateAPIView):
         if booking.date_option:
             booking.date_option.capacity -= booking.travellers
             booking.date_option.save(update_fields=["capacity"])
+
+        if booking.coupon:
+            booking.coupon.used_count += 1
+            booking.coupon.save(update_fields=["used_count"])
 
         # ✅ Send confirmation email
         send_booking_success_email(booking)

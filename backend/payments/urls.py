@@ -12,6 +12,7 @@ from .views import (
     UserRemindersAPIView,
     send_location,
     get_location_history,
+    ApplyCouponAPIView,
 )
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path('reminders/', UserRemindersAPIView.as_view(), name='user-reminders'),
     path('bookings/<int:pk>/send-location/', send_location, name='send_location'),
     path('bookings/<int:pk>/location-history/', get_location_history, name='location_history'),
+    path("bookings/<int:booking_id>/apply-coupon/", ApplyCouponAPIView.as_view(), name="apply-coupon"),
 ]

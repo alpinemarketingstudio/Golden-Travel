@@ -3,6 +3,37 @@ from django.conf import settings
 from destinations.models import TravelDeal, TravelDealDate
 from django.utils import timezone
 
+class Coupon(models.Model):
+    DISCOUNT_TYPE = [
+        ("percentage", "Percentage"),
+        ("fixed", "Fixed Amount"),
+    ]
+
+    code = models.CharField(max_length=50, unique=True)
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPE)
+    discount_value = models.DecimalField(max_digits=10, decimal_places=2)
+
+    max_uses = models.PositiveIntegerField(null=True, blank=True)
+    used_count = models.PositiveIntegerField(default=0)
+
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
+
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        now = timezone.now()
+        return (
+            self.is_active and
+            self.valid_from <= now <= self.valid_to and
+            (self.max_uses is None or self.used_count < self.max_uses)
+        )
+
+    def __str__(self):
+        return self.code
+
 
 class Booking(models.Model):
     PAYMENT_METHODS = [
@@ -52,6 +83,19 @@ class Booking(models.Model):
     add_nights = models.BooleanField(default=False)
     flight_help = models.BooleanField(default=False)
     donation = models.BooleanField(default=False)
+
+    # Coupon
+    coupon = models.ForeignKey(
+        Coupon,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    discount_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
 
     # Payment info
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, blank=True, null=True)

@@ -256,7 +256,7 @@ export default function Desc({ data, onViewDatesClick }) {
               <FaArrowRight />
             </button>
           </div>
-        </div>
+        </div> 
       )}
     </section>
   );

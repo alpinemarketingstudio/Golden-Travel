@@ -21,7 +21,6 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const [regions, setRegions] = useState([]);
   const [countriesByRegion, setCountriesByRegion] = useState({});
   const [travelTypes, setTravelTypes] = useState([]);
@@ -30,25 +29,20 @@ export default function Navbar() {
   const [dealItems, setDealItems] = useState({});
 
   const [activeRegion, setActiveRegion] = useState(null);
-  const [activeCountry, setActiveCountry] = useState(null);
   const [activeTravelType, setActiveTravelType] = useState(null);
   const [activeDealCategory, setActiveDealCategory] = useState(null);
-
   const [showDestinations, setShowDestinations] = useState(false);
   const [showWaysToTravel, setShowWaysToTravel] = useState(false);
   const [showDeals, setShowDeals] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showSearchIcon, setShowSearchIcon] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileView, setMobileView] = useState("main");
   const [mobileActiveRegion, setMobileActiveRegion] = useState(null);
+  const [activeCountry, setActiveCountry] = useState(null);
   const [move, setMove] = useState(false);
-
-  // Fetch Destinations, Travel Types, Deals
   useEffect(() => {
     axiosInstance.get("destinations/").then((res) => {
       const regionList = res.data.regions.map((r) => r.region_name);
@@ -79,12 +73,10 @@ export default function Navbar() {
     });
   }, []);
 
-  // Authentication
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("access_token"));
   }, [location]);
 
-  // Scroll for search icon
   useEffect(() => {
     const handleScroll = () => setShowSearchIcon(window.scrollY > 100);
     if (location.pathname !== "/") setShowSearchIcon(true);
@@ -92,121 +84,206 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [location.pathname]);
 
-  // Hide search bar on navigation
   useEffect(() => {
     if (location.pathname === "/") setShowSearchBar(false);
   }, [location.pathname]);
 
-  // Disable scroll on mobile menu
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "auto";
     return () => (document.body.style.overflow = "auto");
   }, [isMobileMenuOpen]);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
+      // Selects all elements with the class 'dropdown', which now includes the profile dropdown.
       const dropdowns = document.querySelectorAll(".dropdown");
+
+      // If the click target is NOT inside any of the dropdown elements, close them all.
       if (![...dropdowns].some((el) => el.contains(e.target))) {
         setShowDestinations(false);
         setShowWaysToTravel(false);
         setShowDeals(false);
-        setShowProfile(false);
+        // Ensure profile menu is closed on outside click
+        setShowProfile(false); 
       }
     };
+
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  // Logout
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     setIsAuthenticated(false);
-    setShowProfile(false);
+    setShowProfile(false); // Close profile menu after logout
     navigate("/login");
   };
 
-  // Logo click
   const handleLogoClick = () => {
-    if (location.pathname === "/") window.scrollTo({ top: 0, behavior: "smooth" });
-    else navigate("/");
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/");
+    }
   };
 
-  // Mobile Back
   const mobileBack = () => {
     if (mobileView === "countries") setMobileView("destinations");
     else setMobileView("main");
-  };
-
-  // Search handler
-  const handleSearch = () => {
-    if (!searchInput.trim()) return;
-    navigate(`/search?query=${encodeURIComponent(searchInput.trim())}`);
-    setShowSearchBar(false);
-    setIsMobileMenuOpen(false);
-    setSearchInput("");
   };
 
   return (
     <>
       <header className="navbar">
         <div className="navbar-container">
-          {/* Logo */}
           <div className="navbar-logo" onClick={handleLogoClick}>
             <img src={logo} alt="Golden Leaf Travels" />
-            <span>Golden Leaf<br />Travels</span>
+            <span>
+              Golden Leaf
+              <br />
+              Travels
+            </span>
           </div>
 
-          {/* Hamburger */}
           <div className="hamburger-wrapper">
             <Hamburger
               toggled={isMobileMenuOpen}
-              toggle={(t) => { setIsMobileMenuOpen(t); setMobileView("main"); }}
+              toggle={(t) => {
+                setIsMobileMenuOpen(t);
+                setMobileView("main");
+              }}
               size={20}
             />
           </div>
 
-          {/* Navbar Links */}
           <nav className="navbar-links">
             {/* Destinations */}
-            <div className="dropdown" onClick={() => { setShowDestinations(!showDestinations); setShowWaysToTravel(false); setShowDeals(false); setShowProfile(false); }}>
-              <span className="link-item">Destinations <ChevronDown size={14} /></span>
+            <div
+              className="dropdown"
+              onClick={() => {
+                setShowDestinations(!showDestinations);
+                setShowWaysToTravel(false);
+                setShowDeals(false);
+                setShowProfile(false); // Also close profile menu
+              }}
+            >
+              <span className="link-item">
+                Destinations <ChevronDown size={14} />
+              </span>
               {showDestinations && activeRegion && (
                 <div className="mega-menu-dest">
                   <div className="mega-columns">
+                    {/* Regions column */}
                     <div className="column">
                       <ul>
                         {regions.map((r) => (
-                          <li key={r} onClick={() => setActiveRegion(r)} className={activeRegion === r ? "region-active" : ""}>{r}</li>
+                          <li
+                            key={r}
+                            onClick={() => {
+                              setActiveRegion(r);
+                              setActiveCountry(null);
+                            }}
+                            className={
+                              activeRegion === r ? "region-active" : ""
+                            }
+                            onMouseEnter={() => setActiveRegion(r)}
+                          >
+                            {r}
+                          </li>
                         ))}
                       </ul>
                     </div>
+                    {/* Countries column */}
                     <div className="column countries-column">
                       <div className="countries-subcolumns">
                         {(() => {
-                          const countries = countriesByRegion[activeRegion] || [];
+                          const countries =
+                            countriesByRegion[activeRegion] || [];
                           const firstCol = countries.slice(0, 6);
                           const secondCol = countries.slice(6, 12);
                           return (
                             <>
-                              <ul>{firstCol.map(c => <li key={c.slug}><Link to={`/destinations/${c.slug}`} className="plain-link" onClick={() => setShowDestinations(false)}>{c.name}</Link></li>)}</ul>
-                              <ul>{secondCol.map(c => <li key={c.slug}><Link to={`/destinations/${c.slug}`} className="plain-link" onClick={() => setShowDestinations(false)}>{c.name}</Link></li>)}</ul>
+                              <ul>
+                                {firstCol.map((c) => (
+                                  <li key={c.slug}>
+                                    <Link
+                                      to={`/destinations/${c.slug}`}
+                                      className="plain-link"
+                                      onClick={(e) => {
+                                        setActiveCountry(c);
+                                        setShowDestinations(false);
+                                      }}
+                                    >
+                                      {c.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                              <ul>
+                                {secondCol.map((c) => (
+                                  <li key={c.slug}>
+                                    <Link
+                                      to={`/destinations/${c.slug}`}
+                                      className="plain-link"
+                                      onClick={(e) => {
+                                        setActiveCountry(c);
+                                        setShowDestinations(false);
+                                      }}
+                                    >
+                                      {c.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
                             </>
                           );
                         })()}
                       </div>
-                      <button className={`view-all-region-btn ${move ? "move-right" : ""}`} onClick={() => { setMove(true); setShowDestinations(false); navigate(`/destinations/${activeRegion.toLowerCase()}`); }}>
+                      <button
+                        className={`view-all-region-btn ${
+                          move ? "move-right" : ""
+                        }`}
+                        onClick={() => {
+                          setMove(true);
+                          setShowDestinations(false);
+                          navigate(
+                            `/destinations/${activeRegion.toLowerCase()}`
+                          );
+                        }}
+                      >
                         View all {activeRegion}
                       </button>
                     </div>
+                    {/* Featured card column */}
                     <div className="column image-column">
                       <div className="featured-card">
-                        <img src={baliImage} alt={activeRegion} className="featured-image" />
-                        <div className="featured-overlay">
-                          <div className="featured-title">{activeRegion}</div>
-                          <div className="featured-desc">Discover journeys in {activeRegion}</div>
-                          <Link to={`/destinations/${activeRegion.toLowerCase()}`} className="featured-btn">View Trip</Link>
+                        <div className="featured-image-wrapper">
+                          <img
+                            src={baliImage}
+                            alt={
+                              activeCountry ? activeCountry.name : activeRegion
+                            }
+                            className="featured-image"
+                          />
+                          <div className="featured-overlay">
+                            <div className="featured-title">{activeRegion}</div>
+                            <div className="featured-desc">
+                              {activeCountry
+                                ? `Explore ${activeCountry.name} with all our heart and money.`
+                                : `Discover unforgettable journeys in ${activeRegion}.`}
+                            </div>
+                            <Link
+                              to={
+                                activeCountry
+                                  ? `/destinations/${activeCountry.slug}`
+                                  : `/destinations/${activeRegion.toLowerCase()}`
+                              }
+                              className="featured-btn"
+                            >
+                              View Trip
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -216,21 +293,53 @@ export default function Navbar() {
             </div>
 
             {/* Ways to Travel */}
-            <div className="dropdown" onClick={() => { setShowWaysToTravel(!showWaysToTravel); setShowDestinations(false); setShowDeals(false); setShowProfile(false); }}>
-              <span className="link-item">Ways to Travel <ChevronDown size={14} /></span>
+            <div
+              className="dropdown"
+              onClick={() => {
+                setShowWaysToTravel(!showWaysToTravel);
+                setShowDestinations(false);
+                setShowDeals(false);
+                setShowProfile(false); // Also close profile menu
+              }}
+            >
+              <span className="link-item">
+                Ways to Travel <ChevronDown size={14} />
+              </span>
               {showWaysToTravel && activeTravelType && (
                 <div className="mega-menu-ways">
                   <div className="mega-columns">
                     <div className="column">
-                      <ul>{travelTypes.map(t => <li key={t} onClick={() => setActiveTravelType(t)} className={activeTravelType === t ? "active" : ""}>{t}</li>)}</ul>
+                      <ul>
+                        {travelTypes.map((t) => (
+                          <li
+                            key={t}
+                            onClick={() => setActiveTravelType(t)}
+                            className={activeTravelType === t ? "active" : ""}
+                          >
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                     <div className="column">
-                      <ul>{(travelOptions[activeTravelType] || []).map(o => <li key={o}>{o}</li>)}</ul>
+                      <ul>
+                        {(travelOptions[activeTravelType] || []).map((o) => (
+                          <li key={o}>{o}</li>
+                        ))}
+                      </ul>
                     </div>
                     <div className="column image-column">
                       <img src={baliImage} alt={activeTravelType} />
-                      <p className="image-description">Explore {activeTravelType} trips</p>
-                      <Link to={`/ways-to-travel/${activeTravelType.toLowerCase()}`} className="read-more-btn">Explore More</Link>
+                      <p className="image-description">
+                        Discover flexible adventures with{" "}
+                        <strong>{activeTravelType}</strong> style.
+                      </p>
+                      <Link
+                        to={`/ways-to-travel/${activeTravelType.toLowerCase()}`}
+                        className="read-more-btn"
+                      >
+                        Explore More
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -238,21 +347,53 @@ export default function Navbar() {
             </div>
 
             {/* Deals */}
-            <div className="dropdown" onClick={() => { setShowDeals(!showDeals); setShowWaysToTravel(false); setShowDestinations(false); setShowProfile(false); }}>
-              <span className="link-item">Deals <ChevronDown size={14} /></span>
+            <div
+              className="dropdown"
+              onClick={() => {
+                setShowDeals(!showDeals);
+                setShowWaysToTravel(false);
+                setShowDestinations(false);
+                setShowProfile(false); // Also close profile menu
+              }}
+            >
+              <span className="link-item">
+                Deals <ChevronDown size={14} />
+              </span>
               {showDeals && activeDealCategory && (
                 <div className="mega-menu-deals">
                   <div className="mega-columns">
                     <div className="column">
-                      <ul>{dealCategories.map(d => <li key={d} onClick={() => setActiveDealCategory(d)} className={activeDealCategory === d ? "active" : ""}>{d}</li>)}</ul>
+                      <ul>
+                        {dealCategories.map((d) => (
+                          <li
+                            key={d}
+                            onClick={() => setActiveDealCategory(d)}
+                            className={activeDealCategory === d ? "active" : ""}
+                          >
+                            {d}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                     <div className="column">
-                      <ul>{(dealItems[activeDealCategory] || []).map(o => <li key={o}>{o}</li>)}</ul>
+                      <ul>
+                        {(dealItems[activeDealCategory] || []).map((o) => (
+                          <li key={o}>{o}</li>
+                        ))}
+                      </ul>
                     </div>
                     <div className="column image-column">
                       <img src={baliImage} alt={activeDealCategory} />
-                      <p className="image-description">Hot deals for {activeDealCategory}</p>
-                      <Link to={`/deals/${activeDealCategory.toLowerCase()}`} className="read-more-btn">View Offers</Link>
+                      <p className="image-description">
+                        Grab hot deals in <strong>{activeDealCategory}</strong>{" "}
+                        now!
+                      </p>
+                      <Link
+                        to={`/deals/${activeDealCategory.toLowerCase()}`}
+                        className="read-more-btn"
+                      >
+                        View Offers
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -263,78 +404,269 @@ export default function Navbar() {
             <div className="dropdown link-item">
               <span className="dropdown-toggle">About Us</span>
               <div className="dropdown-menu">
-                <Link to="/about" className="dropdown-link">Our Stories</Link>
-                <Link to="/blogs" className="dropdown-link">Blogs</Link>
-                <Link to="/write" className="dropdown-link">Write for us</Link>
+                <Link 
+                  to="/about" 
+                  className="dropdown-link" 
+                  onClick={() => setShowProfile(false)} // Close if other dropdowns are active
+                >
+                  Our Stories
+                </Link>
+                <Link 
+                  to="/blogs" 
+                  className="dropdown-link"
+                  onClick={() => setShowProfile(false)} // Close if other dropdowns are active
+                >
+                  Blogs
+                </Link>
+                <Link 
+                  to="/write" 
+                  className="dropdown-link"
+                  onClick={() => setShowProfile(false)} // Close if other dropdowns are active
+                >
+                  Write for us
+                </Link>
               </div>
             </div>
           </nav>
 
           {/* Desktop Icons */}
           <div className="navbar-icons">
-            <button className={`search-icon ${showSearchIcon ? "visible" : "hidden"}`} onClick={() => setShowSearchBar(p => !p)}>
+            <button
+              className={`search-icon ${
+                showSearchIcon ? "visible" : "hidden"
+              }`}
+              onClick={() => setShowSearchBar((p) => !p)}
+            >
               <Search size={20} />
             </button>
-            <Link to="/profile" className="wishlist-icon"><Heart size={18} /></Link>
+
+            <div className="language-switch">
+              <IoLanguageOutline size={20} />
+            </div>
+            <Link
+              to="/profile"
+              state={{ tab: "favourites" }}
+              className="wishlist-icon"
+              onClick={() => setShowProfile(false)} // Close profile menu when navigating to wishlist
+            >
+              <Heart size={18} />
+            </Link>
+            {/* ADDED 'dropdown' CLASS HERE */}
             <div className="profile-dropdown dropdown">
-              <User size={18} onClick={() => { if(isAuthenticated) setShowProfile(p => !p); else navigate("/login"); setShowDestinations(false); setShowWaysToTravel(false); setShowDeals(false); }}/>
+              <User
+                size={18}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  if (isAuthenticated) {
+                    setShowProfile(!showProfile);
+                    // Close other mega menus when toggling profile for a cleaner UX
+                    setShowDestinations(false);
+                    setShowWaysToTravel(false);
+                    setShowDeals(false);
+                  } else navigate("/login");
+                }}
+              />
               {isAuthenticated && showProfile && (
                 <div className="profile-menu">
-                  <Link to="/profile" className="profile-item">My Profile</Link>
-                  <span className="profile-item" onClick={handleLogout}>Logout</span>
+                  <Link 
+                    to="/profile" 
+                    className="profile-item"
+                    onClick={() => setShowProfile(false)} // 👈 ADDED CLOSING HERE
+                  >
+                    My Profile
+                  </Link>
+                  <span 
+                    onClick={handleLogout} 
+                    className="profile-item"
+                    // handleLogout already calls setShowProfile(false), but this emphasizes the intent:
+                  >
+                    Logout
+                  </span>
                 </div>
               )}
             </div>
-            <Link to="/contact" className="contact-btn">Contact Us</Link>
+            <Link 
+              to="/contact" 
+              className="contact-btn" 
+              tabIndex={0}
+              onClick={() => setShowProfile(false)} // Close profile menu when clicking contact
+            >
+              Contact Us
+            </Link>
           </div>
-
-          {/* Search Bar */}
-          {showSearchBar && (
-            <div className="search-bar-wrapper">
-              <input
-                type="text"
-                placeholder="Search destinations, deals..."
-                autoFocus
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              />
-              <button onClick={handleSearch} className="search-close-btn">🔍</button>
-              <button onClick={() => setShowSearchBar(false)} className="search-close-btn">×</button>
-            </div>
-          )}
         </div>
 
-        {/* Mobile Menu */}
-        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`} onClick={() => setIsMobileMenuOpen(false)} />
-        <aside className={`mobile-menu-panel ${isMobileMenuOpen ? "open" : ""}`}>
-          <div className="mobile-menu-header">
-            {mobileView !== "main" && <button className="mobile-back-btn" onClick={mobileBack}><ChevronLeft size={20}/> Back</button>}
-            <span/>
-            <button className="mobile-close-btn" onClick={() => setIsMobileMenuOpen(false)}>×</button>
+        {/* Search Bar */}
+        {showSearchBar && (
+          <div className="search-bar-wrapper">
+            <input
+              type="text"
+              placeholder="Search destinations, deals..."
+              autoFocus
+            />
+            <button
+              onClick={() => setShowSearchBar(false)}
+              className="search-close-btn"
+            >
+              ×
+            </button>
           </div>
-
-          {/* Mobile main menu */}
-          {mobileView === "main" && (
-            <ul className="mobile-menu-list">
-              <li onClick={() => setMobileView("destinations")}>Destinations <ChevronRight size={18} /></li>
-              <li onClick={() => setMobileView("ways")}>Ways to Travel <ChevronRight size={18} /></li>
-              <li onClick={() => setMobileView("deals")}>Deals <ChevronRight size={18} /></li>
-              <li><Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link></li>
-              <li>
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchInput}
-                  onChange={e => setSearchInput(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && handleSearch()}
-                />
-                <button onClick={handleSearch}>Search</button>
-              </li>
-            </ul>
-          )}
-        </aside>
+        )}
       </header>
+
+      {/* Mobile Drawer */}
+      <div
+        className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+      <aside
+        className={`mobile-menu-panel ${isMobileMenuOpen ? "open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="mobile-menu-header">
+          {mobileView !== "main" && (
+            <button className="mobile-back-btn" onClick={mobileBack}>
+              <ChevronLeft size={20} /> Back
+            </button>
+          )}
+          <span />
+          <button
+            className="mobile-close-btn"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Mobile Views */}
+        {mobileView === "main" && (
+          <ul className="mobile-menu-list">
+            <li onClick={() => setMobileView("destinations")}>
+              Destinations <ChevronRight size={18} />
+            </li>
+            <li onClick={() => setMobileView("ways")}>
+              Ways to Travel <ChevronRight size={18} />
+            </li>
+            <li onClick={() => setMobileView("deals")}>
+              Deals <ChevronRight size={18} />
+            </li>
+            <li>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>
+                About
+              </Link>
+            </li>
+            <hr className="mobile-divider" />
+            <li>
+              <Heart size={18} />{" "}
+              <Link to="/wishlist" className="with-icon" onClick={() => setIsMobileMenuOpen(false)}>
+                Wishlist
+              </Link>
+            </li>
+            <li>
+              <User size={18} />{" "}
+              <Link to="/manage-booking" className="with-icon" onClick={() => setIsMobileMenuOpen(false)}>
+                Manage Booking
+              </Link>
+            </li>
+            <li>
+              <Phone size={18} />{" "}
+              <Link
+                to="/contact"
+                className="with-icon"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contact Us
+              </Link>
+            </li>
+            <hr className="mobile-divider" />
+            {!isAuthenticated ? (
+                <li>
+                    <Link to="/login" className="with-icon" onClick={() => setIsMobileMenuOpen(false)}>
+                        Login
+                    </Link>
+                </li>
+            ) : (
+                <li onClick={handleLogout}>
+                    Logout
+                </li>
+            )}
+          </ul>
+        )}
+
+        {mobileView === "destinations" && (
+          <>
+            <h2 className="mobile-subtitle">Destinations</h2>
+            <ul className="mobile-menu-list sub">
+              {regions.map((r) => (
+                <li
+                  key={r}
+                  onClick={() => {
+                    setMobileActiveRegion(r);
+                    setMobileView("countries");
+                  }}
+                >
+                  {r} <ChevronRight size={18} />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {mobileView === "countries" && (
+          <>
+            <h2 className="mobile-subtitle">{mobileActiveRegion}</h2>
+            <ul className="mobile-menu-list sub">
+              {(countriesByRegion[mobileActiveRegion] || []).map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    to={`/destinations/${c.slug}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {c.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {mobileView === "ways" && (
+          <>
+            <h2 className="mobile-subtitle">Ways to Travel</h2>
+            <ul className="mobile-menu-list sub">
+              {travelTypes.map((t) => (
+                <li key={t}>
+                  <Link
+                    to={`/ways-to-travel/${t.toLowerCase()}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {t}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {mobileView === "deals" && (
+          <>
+            <h2 className="mobile-subtitle">Deals</h2>
+            <ul className="mobile-menu-list sub">
+              {dealCategories.map((d) => (
+                <li key={d}>
+                  <Link
+                    to={`/deals/${d.toLowerCase()}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {d}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </aside>
     </>
   );
 }

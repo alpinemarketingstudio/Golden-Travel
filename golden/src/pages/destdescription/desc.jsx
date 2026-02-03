@@ -102,6 +102,29 @@ export default function Desc({ data, onViewDatesClick }) {
       (prev) => (prev - 1 + (data.gallery?.length || 1)) % (data.gallery?.length || 1)
     );
 
+  // -----------------------------
+  // Download PDF Brochure as link
+  // -----------------------------
+  const handleDownloadBrochure = () => {
+    axiosInstance
+      .get(
+        `/destinations/countries/${data.country.slug}/travel-deals/${data.slug}/brochure/`,
+        { responseType: "blob" }
+      )
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${data.title}-brochure.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      })
+      .catch(() => {
+        alert("Failed to download brochure.");
+      });
+  };
+
   return (
     <section className="trip-section">
       <div className="trip-header">
@@ -146,7 +169,7 @@ export default function Desc({ data, onViewDatesClick }) {
               />
             ))}
 
-            {/* Testimonial remains untouched */}
+            {/* Testimonial */}
             <div className="testimonial">
               <p>“The guide was exceptional, and the trip was well organized.”</p>
               <div className="testimonial-footer">
@@ -187,7 +210,14 @@ export default function Desc({ data, onViewDatesClick }) {
 
           <div className="trip-actions">
             <p className="plan-title">Plan your adventure:</p>
-            <a href="#" className="download">
+            <a
+              href="#"
+              className="download"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDownloadBrochure();
+              }}
+            >
               <FaFileDownload /> Download PDF Brochure
             </a>
             <a href="#" className="contact">

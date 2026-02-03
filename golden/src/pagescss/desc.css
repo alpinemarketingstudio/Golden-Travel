@@ -355,3 +355,19 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+/* Download PDF Brochure as link */
+.trip-actions .download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #007b8a;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.trip-actions .download:hover {
+  color: #005f66;
+}

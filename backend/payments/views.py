@@ -54,10 +54,6 @@ class BookingCreateAPIView(generics.CreateAPIView):
         if travel_date.capacity < travellers:
             return Response({"error": "Not enough slots available for this date."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Reduce capacity safely
-        travel_date.capacity -= travellers
-        travel_date.save()
-
         booking = serializer.save()
 
         return Response(self.get_serializer(booking).data, status=status.HTTP_201_CREATED)
@@ -105,6 +101,11 @@ class BookingPaymentUpdateAPIView(generics.UpdateAPIView):
         booking.transaction_id = data.get("transaction_id", booking.transaction_id)
         booking.status = "confirmed"
         booking.save()
+
+        # Reduce capacity safely
+        if booking.date_option:
+            booking.date_option.capacity -= booking.travellers
+            booking.date_option.save(update_fields=["capacity"])
 
         # ✅ Send confirmation email
         send_booking_success_email(booking)

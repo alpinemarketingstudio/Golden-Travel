@@ -131,7 +131,7 @@ export default function ExclusiveTrips() {
         <div className="exclusive-subheader">
           <div className="exclusive-tabs">
             {tabs.map((tab) => (
-              <span
+              <span 
                 key={tab}
                 className={`exclusive-tab ${activeTab === tab ? "active" : ""}`}
                 onClick={() => setActiveTab(tab)}

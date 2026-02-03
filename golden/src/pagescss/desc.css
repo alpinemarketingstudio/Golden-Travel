@@ -52,7 +52,7 @@
 }
 
 .leave-review-btn:hover {
-  background: #ddb148;;
+  background: #ddb148;
   color: white;
 }
 
@@ -84,6 +84,7 @@
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 /* Bottom images + testimonial */
@@ -97,6 +98,7 @@
   height: 120px;
   object-fit: cover;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .testimonial {
@@ -216,6 +218,64 @@
     transform: translateY(0);
   }
 }
+
+/* === MODAL STYLES === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #fff;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  z-index: 10;
+}
+
+.modal-prev,
+.modal-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+
+.modal-prev { left: 10px; }
+.modal-next { right: 10px; }
 
 /* Responsive */
 @media (max-width: 768px) {

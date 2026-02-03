@@ -9,6 +9,9 @@ import {
   FaFileDownload,
   FaPhoneAlt,
   FaHeart,
+  FaArrowLeft,
+  FaArrowRight,
+  FaTimes,
 } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +24,10 @@ export default function Desc({ data, onViewDatesClick }) {
   const [wishId, setWishId] = useState(null);
   const [loadingWish, setLoadingWish] = useState(false);
 
-  // Check if current deal is wishlisted
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
+
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token || !data.id) return;
@@ -30,12 +36,9 @@ export default function Desc({ data, onViewDatesClick }) {
       .get("/destinations/wishlist/")
       .then((res) => {
         const match = res.data.results.find((item) => item.deal === data.id);
-        if (match) setWishId(match.id);
-        else setWishId(null);
+        setWishId(match ? match.id : null);
       })
-      .catch(() => {
-        setWishId(null);
-      });
+      .catch(() => setWishId(null));
   }, [data.id]);
 
   const handleWishlist = async () => {
@@ -46,7 +49,6 @@ export default function Desc({ data, onViewDatesClick }) {
     }
 
     setLoadingWish(true);
-
     try {
       if (wishId) {
         await axiosInstance.delete(`/destinations/wishlist/${wishId}/`);
@@ -57,8 +59,7 @@ export default function Desc({ data, onViewDatesClick }) {
         });
         setWishId(res.data.id);
       }
-    } catch (err) {
-      console.error("Wishlist error", err);
+    } catch {
       alert("Failed to update wishlist. Please try again.");
     } finally {
       setLoadingWish(false);
@@ -82,14 +83,24 @@ export default function Desc({ data, onViewDatesClick }) {
 
   const scrollToReviewSection = () => {
     const reviewSection = document.getElementById("review-section");
-    if (reviewSection) {
-      reviewSection.scrollIntoView({ behavior: "smooth" });
-    }
+    if (reviewSection) reviewSection.scrollIntoView({ behavior: "smooth" });
   };
 
-  const openImage = (src) => {
-    window.open(src, "_blank"); // Simple: open image in new tab
+  // Modal handlers
+  const openModal = (index) => {
+    setModalIndex(index);
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const nextImage = () =>
+    setModalIndex((prev) => (prev + 1) % (data.gallery?.length || 1));
+
+  const prevImage = () =>
+    setModalIndex(
+      (prev) => (prev - 1 + (data.gallery?.length || 1)) % (data.gallery?.length || 1)
+    );
 
   return (
     <section className="trip-section">
@@ -101,7 +112,6 @@ export default function Desc({ data, onViewDatesClick }) {
             {renderStars(rating)}
             <span
               className="review-count"
-              style={{ cursor: "pointer", textDecoration: "underline" }}
               onClick={scrollToReviewSection}
             >
               {rating.toFixed(1)} ({data.review_count || 0} reviews)
@@ -120,7 +130,7 @@ export default function Desc({ data, onViewDatesClick }) {
                 key={i}
                 src={img.image}
                 alt={`${data.title} ${i + 1}`}
-                onClick={() => openImage(img.image)}
+                onClick={() => openModal(i)}
                 style={{ cursor: "pointer" }}
               />
             ))}
@@ -128,13 +138,15 @@ export default function Desc({ data, onViewDatesClick }) {
           <div className="bottom-imgs">
             {data.gallery?.slice(2, 5).map((img, i) => (
               <img
-                key={i}
+                key={i + 2}
                 src={img.image}
                 alt={`${data.title} ${i + 3}`}
-                onClick={() => openImage(img.image)}
+                onClick={() => openModal(i + 2)}
                 style={{ cursor: "pointer" }}
               />
             ))}
+
+            {/* Testimonial remains untouched */}
             <div className="testimonial">
               <p>“The guide was exceptional, and the trip was well organized.”</p>
               <div className="testimonial-footer">
@@ -157,7 +169,6 @@ export default function Desc({ data, onViewDatesClick }) {
             className="wishlist-btn"
             onClick={handleWishlist}
             disabled={loadingWish}
-            aria-busy={loadingWish}
           >
             {wishId ? (
               <>
@@ -176,10 +187,10 @@ export default function Desc({ data, onViewDatesClick }) {
 
           <div className="trip-actions">
             <p className="plan-title">Plan your adventure:</p>
-            <a href="#" className="download" tabIndex={0}>
+            <a href="#" className="download">
               <FaFileDownload /> Download PDF Brochure
             </a>
-            <a href="#" className="contact" tabIndex={0}>
+            <a href="#" className="contact">
               <FaPhoneAlt /> Contact Operator
             </a>
           </div>
@@ -188,28 +199,35 @@ export default function Desc({ data, onViewDatesClick }) {
 
       {/* Bottom Icons */}
       <div className="trip-icons">
-        <div>
-          <FaUserFriends /> Platinum Operator
-        </div>
-        <div>
-          <FaUsers /> Group Tour
-        </div>
-        <div>
-          <FaLanguage /> English Guided
-        </div>
-        <div>
-          <FaMapSigns /> Age 1 to 99
-        </div>
-        <div>
-          <FaGlobe /> Cultural Experience
-        </div>
-        <div>
-          <FaMapSigns /> Partial Guided
-        </div>
-        <div>
-          <FaUsers /> Group Size 2 - 15
-        </div>
+        <div><FaUserFriends /> Platinum Operator</div>
+        <div><FaUsers /> Group Tour</div>
+        <div><FaLanguage /> English Guided</div>
+        <div><FaMapSigns /> Age 1 to 99</div>
+        <div><FaGlobe /> Cultural Experience</div>
+        <div><FaMapSigns /> Partial Guided</div>
+        <div><FaUsers /> Group Size 2 - 15</div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>
+              <FaTimes />
+            </button>
+            <button className="modal-prev" onClick={prevImage}>
+              <FaArrowLeft />
+            </button>
+            <img
+              src={data.gallery?.[modalIndex]?.image}
+              alt={`Slide ${modalIndex + 1}`}
+            />
+            <button className="modal-next" onClick={nextImage}>
+              <FaArrowRight />
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

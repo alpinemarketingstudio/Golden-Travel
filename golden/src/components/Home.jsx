@@ -29,7 +29,7 @@ export default function Home() {
   const [endDateError, setEndDateError] = useState("");
 
   const startDateRef = useRef(null);
-  const endDateRef = useRef(null);
+  const endDateRef = useRef(null); 
   const navigate = useNavigate();
 
   /* =========================

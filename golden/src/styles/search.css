@@ -158,7 +158,7 @@
   margin-bottom: 10px;
   font-weight: 600;
 }
-/* STRAIGHT CHECKBOX ALIGNMENT */
+/* CHECKBOX ALIGNMENT */
 .sr-filters label {
   display: flex;
   align-items: center;
@@ -246,7 +246,7 @@
   font-weight: 600;
 }
 
-/* ---------- CONTENT BELOW IMAGE WITH GRADIENT ---------- */
+/* ---------- CONTENT BELOW IMAGE ---------- */
 .sr-deal-overlay {
   padding: 16px;
   display: flex;
@@ -275,7 +275,8 @@
   margin-top: auto;
 }
 
-.sr-deal-btn {
+/* ---------- SEE DETAILS BUTTON ---------- */
+.sr-bottom-row button {
   border: 1px solid #333;
   color: black;
   padding: 6px 14px;
@@ -284,8 +285,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.sr-deal-btn:hover {
-  background: var(--highlight-color);
+.sr-bottom-row button:hover {
+  background: var(--highlight-color, goldenrod);
   color: #fff;
   border-color: goldenrod;
 }
@@ -314,14 +315,14 @@
   padding: 20px 90px 50px;
   font-size: 0.95rem;
 }
-.sr-pagination .sr-icon-btn {
+.sr-pagination button {
   font-size: 1.6rem;
   color: goldenrod;
   cursor: pointer;
   border: none;
   background: transparent;
 }
-.sr-pagination .sr-icon-btn:hover {
+.sr-pagination button:hover {
   color: #d4a017;
 }
 
@@ -339,7 +340,6 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 768px) {
   .sr-search-wrapper {
     padding: 0 20px;

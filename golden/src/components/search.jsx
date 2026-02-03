@@ -35,7 +35,7 @@ export default function Search() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // Initialize from URL
+  // --- Initialize from URL params and fetch results automatically ---
   useEffect(() => {
     const sd = searchParams.get("start_date");
     const ed = searchParams.get("end_date");
@@ -49,6 +49,9 @@ export default function Search() {
       setRegionId(r);
       fetchRegionName(r);
     }
+
+    // Fetch results whenever page loads or params change
+    fetchDeals(q || "", sd || null, ed || null, r || null);
   }, [searchParams]);
 
   const fetchRegionName = async (id) => {
@@ -60,32 +63,20 @@ export default function Search() {
     }
   };
 
-  const shouldSearch =
-    searchQuery.trim() ||
-    startDate ||
-    endDate ||
-    filters.durationMin ||
-    filters.durationMax ||
-    filters.priceMin ||
-    filters.priceMax ||
-    filters.sale ||
-    filters.styles.length > 0 ||
-    filters.themes.length > 0 ||
-    regionId;
-
-  const fetchDeals = async () => {
+  // --- Fetch deals from backend ---
+  const fetchDeals = async (query = searchQuery, sd = startDate, ed = endDate, region = regionId) => {
     const params = {
-      start_date: startDate?.toISOString().split("T")[0],
-      end_date: endDate?.toISOString().split("T")[0],
-      min_duration: filters.durationMin,
-      max_duration: filters.durationMax,
-      min_price: filters.priceMin,
-      max_price: filters.priceMax,
-      sale: filters.sale,
-      style: filters.styles,
-      theme: filters.themes,
-      query: searchQuery.trim() || undefined,
-      region: regionId || undefined,
+      query: query?.trim() || undefined,
+      start_date: sd ? new Date(sd).toISOString().split("T")[0] : undefined,
+      end_date: ed ? new Date(ed).toISOString().split("T")[0] : undefined,
+      min_duration: filters.durationMin || undefined,
+      max_duration: filters.durationMax || undefined,
+      min_price: filters.priceMin || undefined,
+      max_price: filters.priceMax || undefined,
+      sale: filters.sale || undefined,
+      style: filters.styles.length > 0 ? filters.styles : undefined,
+      theme: filters.themes.length > 0 ? filters.themes : undefined,
+      region: region || undefined,
     };
 
     try {
@@ -98,6 +89,7 @@ export default function Search() {
     }
   };
 
+  // --- Filter helpers ---
   const norm = (v = "") => v.toLowerCase().trim();
 
   const { styleList, styleCount, themeList, themeCount } = useMemo(() => {
@@ -133,6 +125,9 @@ export default function Search() {
     } else {
       setFilters((prev) => ({ ...prev, [type]: value }));
     }
+
+    // Auto fetch results on filter change
+    fetchDeals(searchQuery, startDate, endDate, regionId);
   };
 
   const toggleWishlist = (id) => {
@@ -164,6 +159,7 @@ export default function Search() {
 
   const paginatedResults = filteredResults.slice((page - 1) * perPage, page * perPage);
 
+  // --- Date handlers ---
   const onStartDateChange = (date) => {
     setStartDate(date);
     setEndDateError("");
@@ -214,7 +210,9 @@ export default function Search() {
               type="text"
               placeholder="Search destination, trip name..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
             />
           </div>
 
@@ -227,7 +225,6 @@ export default function Search() {
                 placeholderText="Start date"
                 className="sr-datepicker"
                 minDate={new Date()}
-                onKeyDown={(e) => e.preventDefault()}
               />
             </div>
 
@@ -240,12 +237,14 @@ export default function Search() {
                 placeholderText="End date"
                 className="sr-datepicker"
                 minDate={startDate || new Date()}
-                onKeyDown={(e) => e.preventDefault()}
               />
             </div>
           </div>
 
-          <button className="sr-search-btn" onClick={fetchDeals}>
+          <button
+            className="sr-search-btn"
+            onClick={() => fetchDeals(searchQuery, startDate, endDate, regionId)}
+          >
             <SearchIcon size={16} /> Search
           </button>
         </div>
@@ -295,37 +294,22 @@ export default function Search() {
             </label>
           ))}
         </aside>
- 
+
         <div className="sr-deals-grid">
-          {!shouldSearch ? (
-            <p className="sr-placeholder">Start typing or select a region to search for trips.</p>
-          ) : paginatedResults.length > 0 ? (
+          {paginatedResults.length > 0 ? (
             paginatedResults.map((result, i) => (
-              <div className="sr-deal-card" key={result.id} style={{ "--i": i }}>
+              <div className="sr-deal-card" key={result.id}>
                 <div className="sr-deal-image" style={{ backgroundImage: `url(${result.image || "https://via.placeholder.com/300"})` }}>
                   {result.on_sale && <div className="sr-ribbon">ON SALE</div>}
-
-                  <button
-                    className="sr-wishlist-btn"
-                    onClick={() => toggleWishlist(result.id)}
-                    aria-label="Add to wishlist"
-                  >
+                  <button className="sr-wishlist-btn" onClick={() => toggleWishlist(result.id)}>
                     {result.is_favorite ? <FaHeart color="goldenrod" /> : <FaRegHeart color="white" />}
                   </button>
                 </div>
-
                 <div className="sr-deal-overlay">
                   <h3>{result.title}</h3>
                   <p className="sr-excerpt">{truncateText(result.description, 80)}</p>
                   <div className="sr-bottom-row">
-                    <button
-                      className="sr-deal-btn"
-                      onClick={() =>
-                        navigate(`/destinations/${result.country?.slug || "unknown"}/deal/${slugify(result.title)}`)
-                      }
-                    >
-                      See Details
-                    </button>
+                    <button onClick={() => navigate(`/destinations/${result.country?.slug || "unknown"}/deal/${slugify(result.title)}`)}>See Details</button>
                     <div className="sr-price-wrap">
                       <span className="sr-old-price">${Number(result.price) + 400}</span>
                       <span className="sr-new-price">${result.price}</span>
@@ -343,9 +327,9 @@ export default function Search() {
       {/* Pagination */}
       {filteredResults.length > 0 && (
         <div className="sr-pagination">
-          <button className="sr-icon-btn" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label="Previous page">◀</button>
-          <span>Page {page} of {Math.ceil(filteredResults.length / perPage) || 1}</span>
-          <button className="sr-icon-btn" onClick={() => setPage((p) => Math.min(Math.ceil(filteredResults.length / perPage), p + 1))} disabled={page >= Math.ceil(filteredResults.length / perPage)} aria-label="Next page">▶</button>
+          <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>◀</button>
+          <span>Page {page} of {Math.ceil(filteredResults.length / perPage)}</span>
+          <button onClick={() => setPage((p) => Math.min(Math.ceil(filteredResults.length / perPage), p + 1))} disabled={page >= Math.ceil(filteredResults.length / perPage)}>▶</button>
         </div>
       )}
     </section>

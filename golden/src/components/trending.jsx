@@ -151,7 +151,7 @@ export default function TrendingTours() {
                 <p className="trend-trip-desc">{truncate(trip.description, 100)}</p>
                 <div className="trend-trip-days">{trip.days} days</div>
                 <div className="trend-action-row">
-                  <button
+                  <button 
                     className="trend-details-btn"
                     onClick={() =>
                       navigate(`/destinations/${trip.country?.slug || "country"}/deal/${trip.slug || trip.id}`)

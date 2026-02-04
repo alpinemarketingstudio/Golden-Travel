@@ -142,7 +142,7 @@
 /* Clamp trip description to 2 lines */
 .trend-trip-desc {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Show only 2 lines */
+  -webkit-line-clamp: 2; /* limit to 2 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -150,6 +150,10 @@
   margin: 0;
   font-size: 0.85rem;
   color: black;
+
+  /* NEW FIX */
+  max-height: 2.6em; /* 2 lines x line-height */
+  display: block;
 }
 
 

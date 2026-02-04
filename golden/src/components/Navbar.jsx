@@ -454,9 +454,6 @@ export default function Navbar() {
               <Search size={20} />
             </button>
 
-            <div className="language-switch">
-              <IoLanguageOutline size={20} />
-            </div>
             <Link
               to="/profile"
               state={{ tab: "favourites" }}

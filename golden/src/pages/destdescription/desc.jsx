@@ -9,24 +9,21 @@ import {
   FaFileDownload,
   FaPhoneAlt,
   FaHeart,
-  FaArrowLeft,
-  FaArrowRight,
-  FaTimes,
 } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import "../../pagescss/desc.css";
 
+// ✅ React Photo View
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
+
 export default function Desc({ data, onViewDatesClick }) {
   const rating = data.average_rating || 0;
   const navigate = useNavigate();
   const [wishId, setWishId] = useState(null);
   const [loadingWish, setLoadingWish] = useState(false);
-
-  // Modal state
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalIndex, setModalIndex] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -86,25 +83,6 @@ export default function Desc({ data, onViewDatesClick }) {
     if (reviewSection) reviewSection.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Modal handlers
-  const openModal = (index) => {
-    setModalIndex(index);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => setIsModalOpen(false);
-
-  const nextImage = () =>
-    setModalIndex((prev) => (prev + 1) % (data.gallery?.length || 1));
-
-  const prevImage = () =>
-    setModalIndex(
-      (prev) => (prev - 1 + (data.gallery?.length || 1)) % (data.gallery?.length || 1)
-    );
-
-  // -----------------------------
-  // Download PDF Brochure as link
-  // -----------------------------
   const handleDownloadBrochure = () => {
     axiosInstance
       .get(
@@ -133,10 +111,7 @@ export default function Desc({ data, onViewDatesClick }) {
           <strong>{data.days} days</strong>
           <div className="rating-row">
             {renderStars(rating)}
-            <span
-              className="review-count"
-              onClick={scrollToReviewSection}
-            >
+            <span className="review-count" onClick={scrollToReviewSection}>
               {rating.toFixed(1)} ({data.review_count || 0} reviews)
             </span>
           </div>
@@ -145,42 +120,46 @@ export default function Desc({ data, onViewDatesClick }) {
       </div>
 
       <div className="trip-content">
-        {/* Gallery */}
-        <div className="trip-gallery">
-          <div className="top-gallery">
-            {data.gallery?.slice(0, 2).map((img, i) => (
-              <img
-                key={i}
-                src={img.image}
-                alt={`${data.title} ${i + 1}`}
-                onClick={() => openModal(i)}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
-          </div>
-          <div className="bottom-imgs">
-            {data.gallery?.slice(2, 5).map((img, i) => (
-              <img
-                key={i + 2}
-                src={img.image}
-                alt={`${data.title} ${i + 3}`}
-                onClick={() => openModal(i + 2)}
-                style={{ cursor: "pointer" }}
-              />
-            ))}
+        {/* ✅ GALLERY WITH REACT PHOTO VIEW */}
+        <PhotoProvider>
+          <div className="trip-gallery">
+            <div className="top-gallery">
+              {data.gallery?.slice(0, 2).map((img, i) => (
+                <PhotoView key={i} src={img.image}>
+                  <img
+                    src={img.image}
+                    alt={`${data.title} ${i + 1}`}
+                    style={{ cursor: "pointer" }}
+                  />
+                </PhotoView>
+              ))}
+            </div>
 
-            {/* Testimonial */}
-            <div className="testimonial">
-              <p>“The guide was exceptional, and the trip was well organized.”</p>
-              <div className="testimonial-footer">
-                <span>Priya · Travelled in May</span>
-                <span>
-                  <FaStar className="star" /> 5.0
-                </span>
+            <div className="bottom-imgs">
+              {data.gallery?.slice(2, 5).map((img, i) => (
+                <PhotoView key={i + 2} src={img.image}>
+                  <img
+                    src={img.image}
+                    alt={`${data.title} ${i + 3}`}
+                    style={{ cursor: "pointer" }}
+                  />
+                </PhotoView>
+              ))}
+
+              <div className="testimonial">
+                <p>
+                  “The guide was exceptional, and the trip was well organized.”
+                </p>
+                <div className="testimonial-footer">
+                  <span>Priya · Travelled in May</span>
+                  <span>
+                    <FaStar className="star" /> 5.0
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </PhotoProvider>
 
         {/* Booking Box */}
         <div className="trip-info-box">
@@ -237,27 +216,6 @@ export default function Desc({ data, onViewDatesClick }) {
         <div><FaMapSigns /> Partial Guided</div>
         <div><FaUsers /> Group Size 2 - 15</div>
       </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>
-              <FaTimes />
-            </button>
-            <button className="modal-prev" onClick={prevImage}>
-              <FaArrowLeft />
-            </button>
-            <img
-              src={data.gallery?.[modalIndex]?.image}
-              alt={`Slide ${modalIndex + 1}`}
-            />
-            <button className="modal-next" onClick={nextImage}>
-              <FaArrowRight />
-            </button>
-          </div>
-        </div> 
-      )}
     </section>
   );
 }

@@ -476,3 +476,23 @@ class RegionWithCountriesView(APIView):
         regions = Region.objects.prefetch_related("countries").all()
         data = RegionSerializer(regions, many=True, context={"request": request}).data
         return Response(data)
+
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+
+class TravelDealBrochureDownloadView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, country_slug, slug):
+        # Look up the deal by slug
+        deal = get_object_or_404(TravelDeal, slug=slug)
+
+        if not deal.brochure:
+            return Response({"detail": "Brochure not found."}, status=404)
+
+        # Serve the PDF file
+        response = HttpResponse(deal.brochure, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{deal.title}-brochure.pdf"'
+        return response
+
+

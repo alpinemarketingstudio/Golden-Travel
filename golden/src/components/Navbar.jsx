@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRef } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -27,6 +28,7 @@ export default function Navbar() {
   const [travelOptions, setTravelOptions] = useState({});
   const [dealCategories, setDealCategories] = useState([]);
   const [dealItems, setDealItems] = useState({});
+  const clickTimeoutRef = useRef(null);
 
   const [activeRegion, setActiveRegion] = useState(null);
   const [activeTravelType, setActiveTravelType] = useState(null);
@@ -37,6 +39,7 @@ export default function Navbar() {
   const [showProfile, setShowProfile] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showSearchIcon, setShowSearchIcon] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileView, setMobileView] = useState("main");
@@ -104,7 +107,7 @@ export default function Navbar() {
         setShowWaysToTravel(false);
         setShowDeals(false);
         // Ensure profile menu is closed on outside click
-        setShowProfile(false); 
+        setShowProfile(false);
       }
     };
 
@@ -248,7 +251,7 @@ export default function Navbar() {
                           setMove(true);
                           setShowDestinations(false);
                           navigate(
-                            `/destinations/${activeRegion.toLowerCase()}`
+                            `/destinations/${activeRegion.toLowerCase()}`,
                           );
                         }}
                       >
@@ -404,22 +407,22 @@ export default function Navbar() {
             <div className="dropdown link-item">
               <span className="dropdown-toggle">About Us</span>
               <div className="dropdown-menu">
-                <Link 
-                  to="/about" 
-                  className="dropdown-link" 
+                <Link
+                  to="/about"
+                  className="dropdown-link"
                   onClick={() => setShowProfile(false)} // Close if other dropdowns are active
                 >
                   Our Stories
                 </Link>
-                <Link 
-                  to="/blogs" 
+                <Link
+                  to="/blogs"
                   className="dropdown-link"
                   onClick={() => setShowProfile(false)} // Close if other dropdowns are active
                 >
                   Blogs
                 </Link>
-                <Link 
-                  to="/write" 
+                <Link
+                  to="/write"
                   className="dropdown-link"
                   onClick={() => setShowProfile(false)} // Close if other dropdowns are active
                 >
@@ -432,10 +435,21 @@ export default function Navbar() {
           {/* Desktop Icons */}
           <div className="navbar-icons">
             <button
-              className={`search-icon ${
-                showSearchIcon ? "visible" : "hidden"
-              }`}
-              onClick={() => setShowSearchBar((p) => !p)}
+              className={`search-icon ${showSearchIcon ? "visible" : "hidden"}`}
+              onClick={() => {
+                if (clickTimeoutRef.current) {
+                  // DOUBLE CLICK → close search
+                  clearTimeout(clickTimeoutRef.current);
+                  clickTimeoutRef.current = null;
+                  setShowSearchBar(false);
+                } else {
+                  // SINGLE CLICK → open search
+                  clickTimeoutRef.current = setTimeout(() => {
+                    setShowSearchBar(true);
+                    clickTimeoutRef.current = null;
+                  }, 250);
+                }
+              }}
             >
               <Search size={20} />
             </button>
@@ -468,15 +482,15 @@ export default function Navbar() {
               />
               {isAuthenticated && showProfile && (
                 <div className="profile-menu">
-                  <Link 
-                    to="/profile" 
+                  <Link
+                    to="/profile"
                     className="profile-item"
                     onClick={() => setShowProfile(false)} // 👈 ADDED CLOSING HERE
                   >
                     My Profile
                   </Link>
-                  <span 
-                    onClick={handleLogout} 
+                  <span
+                    onClick={handleLogout}
                     className="profile-item"
                     // handleLogout already calls setShowProfile(false), but this emphasizes the intent:
                   >
@@ -485,9 +499,9 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            <Link 
-              to="/contact" 
-              className="contact-btn" 
+            <Link
+              to="/contact"
+              className="contact-btn"
               tabIndex={0}
               onClick={() => setShowProfile(false)} // Close profile menu when clicking contact
             >
@@ -502,8 +516,17 @@ export default function Navbar() {
             <input
               type="text"
               placeholder="Search destinations, deals..."
+              value={searchQuery}
               autoFocus
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && searchQuery.trim()) {
+                  navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+                  setShowSearchBar(false);
+                }
+              }}
             />
+
             <button
               onClick={() => setShowSearchBar(false)}
               className="search-close-btn"
@@ -559,13 +582,21 @@ export default function Navbar() {
             <hr className="mobile-divider" />
             <li>
               <Heart size={18} />{" "}
-              <Link to="/wishlist" className="with-icon" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link
+                to="/wishlist"
+                className="with-icon"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Wishlist
               </Link>
             </li>
             <li>
               <User size={18} />{" "}
-              <Link to="/manage-booking" className="with-icon" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link
+                to="/manage-booking"
+                className="with-icon"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Manage Booking
               </Link>
             </li>
@@ -581,15 +612,17 @@ export default function Navbar() {
             </li>
             <hr className="mobile-divider" />
             {!isAuthenticated ? (
-                <li>
-                    <Link to="/login" className="with-icon" onClick={() => setIsMobileMenuOpen(false)}>
-                        Login
-                    </Link>
-                </li>
+              <li>
+                <Link
+                  to="/login"
+                  className="with-icon"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Login
+                </Link>
+              </li>
             ) : (
-                <li onClick={handleLogout}>
-                    Logout
-                </li>
+              <li onClick={handleLogout}>Logout</li>
             )}
           </ul>
         )}

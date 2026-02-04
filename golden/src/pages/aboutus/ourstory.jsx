@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../pagescss/ourstory.css";
-import monkImage from "../../assets/img2.jpg"; 
-
+import travelImage from "../../assets/solotraveler.jpg"; 
 export default function OurStory() {
   return (
     <section className="our-story-section">
@@ -13,28 +12,27 @@ export default function OurStory() {
 
       <div className="our-story-content">
         <div className="image-side">
-          <img src={monkImage} alt="Young monk" />
+          <img src={travelImage} alt="Traveler exploring mountains" />
         </div>
-        <div className="text-side"> 
+        <div className="text-side">
           <p>
-            In 2014, a curious traveler set off across the Himalayan borderlands of Nepal and
-            Northern India — not seeking luxury, but meaning. With little more than a backpack and a
-            desire to understand the world more deeply, they wandered beyond the tourist trails,
-            into mountain villages, busy bazaars, and quiet homes where stories lived in every smile
-            and shared meal.
+            In 2014, driven by curiosity and a thirst for authentic experiences, a solo traveler set 
+            foot into the Himalayan borderlands of Nepal and Northern India. Not chasing luxury or 
+            social media-worthy spots, they sought the stories, smells, and sounds of life lived 
+            fully in remote villages, bustling bazaars, and quiet homes where locals welcomed strangers 
+            with smiles and shared meals.
           </p>
           <p>
-            What began as a personal adventure quickly transformed into something more. The
-            hospitality, resilience, and warmth found in these remote corners revealed a deeper
-            truth: that the most impactful journeys aren’t about seeing more, but about connecting
-            more.
+            These journeys revealed a simple truth: travel is richest not when ticking destinations off a 
+            list, but when slowing down to truly connect—with people, culture, and the rhythm of life 
+            far from crowded trails.
           </p>
           <p>
-            One evening, in a small village near the Annapurna range, while sharing dal bhat and
-            laughter with a host family, the idea for Goldenleaf Travel quietly took root. Why
-            weren’t more people experiencing this side of travel? And how could tourism be reshaped
-            to benefit not just the traveler, but also the communities who make each journey
-            unforgettable?
+            One night, under a starlit sky in a small mountain settlement, while sharing a humble meal 
+            and heartfelt laughter with a local family, an idea sparked. Goldenleaf Travel was born 
+            from a vision: to create journeys that honor both the traveler’s curiosity and the 
+            communities that make these stories possible, crafting experiences that linger long after 
+            the trip ends.
           </p>
 
           <button className="read-more-btn">Read More About Our Journey</button>

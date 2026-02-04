@@ -46,6 +46,7 @@ import DestDescription from "./pages/destdescription";
 import Blogs from "./pages/blogs";
 import BlogDetail from "./pages/BlogDetail";
 import Write from "./pages/write";
+import About from "./pages/Aboutus";
 
 // Search Page
 import Search from "./components/search";
@@ -170,7 +171,7 @@ function UserLayout() {
 
         {/* Write Blog */}
         <Route path="/write" element={<Write />} />
-
+<Route path="/aboutus" element={<About />} />
         {/* Search */}
         <Route path="/search" element={<Search />} />
 

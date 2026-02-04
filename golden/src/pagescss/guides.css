@@ -1,13 +1,14 @@
+/* ===== Guides Section ===== */
 .guides-section {
-  padding: 60px 20px;
+  padding: 60px 5vw;
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
 
 .guides-title {
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 2.2rem;
+  font-weight: 600;
   margin-bottom: 10px;
   position: relative;
 }
@@ -15,58 +16,110 @@
 .guides-title::after {
   content: "";
   display: block;
-  width: 60px;
+  width: 70px;
   height: 4px;
-  background-color: orange;
-  margin: 10px auto 0;
+  background-color: #ff7f50; /* warm accent color */
+  margin: 12px auto 0;
+  border-radius: 2px;
 }
 
 .guides-description {
   font-size: 1rem;
-  color: #444;
-  margin-bottom: 40px;
-  max-width: 700px;
+  color: #555;
+  margin-bottom: 50px;
+  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
 }
 
+/* ===== Grid Layout ===== */
 .guide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 30px;
 }
 
+/* ===== Guide Card ===== */
 .guide-card {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: #fff;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .guide-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Wrapper & Overlay */
+.guide-img-wrapper {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
 }
 
 .guide-img {
   width: 100%;
-  height: 250px;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.guide-content {
-  padding: 15px;
+.guide-card:hover .guide-img {
+  transform: scale(1.08);
 }
 
-.guide-content h3 {
-  font-size: 1.2rem;
+.guide-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  color: #fff;
+  text-align: left;
+}
+
+.guide-overlay h3 {
+  margin: 0;
+  font-size: 1.3rem;
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
-.guide-content p {
+.guide-overlay p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Card Content (Quote) */
+.guide-content {
+  padding: 20px;
   font-size: 0.95rem;
   color: #333;
-  line-height: 1.6;
+  line-height: 1.5;
+  min-height: 120px; /* ensures all cards align */
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 992px) {
+  .guide-img-wrapper {
+    height: 200px;
+  }
+  .guide-overlay h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+  .guide-img-wrapper {
+    height: 180px;
+  }
+  .guide-content {
+    padding: 15px;
+  }
 }

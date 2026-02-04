@@ -1,36 +1,52 @@
 import React from "react";
-import img1 from "../../assets/bali.jpg";
-import img2 from "../../assets/bali.jpg";
-import img3 from "../../assets/img2.jpg";
+import nepalImg from "../../assets/nepal.jpg"; 
+import indonesiaImg from "../../assets/indo.png"; 
+import thailandImg from "../../assets/thailand.webp"; 
 import "../../pagescss/goodtimes.css";
 
-const Card = ({ image, title, country }) => (
+const Card = ({ image, title, description }) => (
   <div className="good-card">
     <div className="good-img-wrapper">
       <img src={image} alt={title} className="good-img" />
       <div className="good-overlay">
         <h4>{title}</h4>
-        <p>{country}</p>
-        <a href="#">Explore &gt;</a>
+        <p>{description}</p>
       </div>
-    </div>
-    <div className="good-body">
-      <p className="good-label">Good Trips</p>
-      <h3 className="good-text">
-        Where to go in 2025 for sund lovers – a month-by-month guide
-      </h3>
     </div>
   </div>
 );
 
 export default function GoodTimes() {
+  const cards = [
+    {
+      image: nepalImg,
+      title: "Nepal",
+      description: "Trek the Himalayas, explore vibrant culture, and discover serene mountain villages.",
+    },
+    {
+      image: indonesiaImg,
+      title: "Indonesia",
+      description: "Experience tropical beaches, lush rice terraces, and rich island traditions.",
+    },
+    {
+      image: thailandImg,
+      title: "Thailand",
+      description: "Relax on golden beaches, taste world-famous cuisine, and explore colorful markets.",
+    },
+  ];
+
   return (
     <section className="good-section">
-      <h2 className="good-title">Get inspired on the Good Times</h2>
+      <h2 className="good-title">Get Inspired for Your Next Adventure</h2>
       <div className="good-grid">
-        <Card image={img1} title="Kyoto" country="Japan" />
-        <Card image={img2} title="Kyoto" country="Japan" />
-        <Card image={img3} title="Kyoto" country="Japan" />
+        {cards.map((card, index) => (
+          <Card
+            key={index}
+            image={card.image}
+            title={card.title}
+            description={card.description}
+          />
+        ))}
       </div>
     </section>
   );

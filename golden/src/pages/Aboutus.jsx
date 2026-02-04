@@ -9,7 +9,7 @@ import Guides from "./aboutus/guides";
 import GoodTimes from "./aboutus/goodtimes"; 
 import Foot from "../pages/foot";
 
-import heroImg from "../assets/bali.jpg";
+import heroImg from "../assets/mountain.jpg";
 
 export default function AboutUs() {
   const handleClick = (id) => {
@@ -17,7 +17,6 @@ export default function AboutUs() {
   };
 
   useEffect(() => {
-    // optional scroll tracking logic here if needed in future
     const handleScroll = () => {};
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -25,24 +24,24 @@ export default function AboutUs() {
 
   return (
     <div className="about-container">
-      {/* ── breadcrumb ───────────────────── */}
+      {/* ── Breadcrumb ───────────────────── */}
       <nav className="breadcrumb">
-        <Link to="/">Home</Link> <span className="arrow">›</span> <span>About us</span>
+        <Link to="/">Home</Link> <span className="arrow">›</span> <span>About Us</span>
       </nav>
 
-      {/* ── hero section ─────────────────── */}
+      {/* ── Hero Section ─────────────────── */}
       <div className="about-hero" style={{ backgroundImage: `url(${heroImg})` }}>
         <div className="hero-text">
           <h1 className="hero-heading">About Golden Leaf Travels</h1>
-          <p className="hero-subtitle">Small group tours</p>
+          <p className="hero-subtitle">Small Group Tours & Immersive Experiences</p>
         </div>
       </div>
 
-      {/* ── top-tabs navigation ──────────── */}
+      {/* ── Top Tabs Navigation ──────────── */}
       <nav className="top-tabs">
         <ul>
           {[
-            ["purpose", "Our purpose"],
+            ["purpose", "Our Purpose"],
             ["story", "Our Story"],
             ["why", "Why Golden Leaf"],
             ["guides", "Our Team"],
@@ -56,20 +55,27 @@ export default function AboutUs() {
         </ul>
       </nav>
 
-      {/* ── Description paragraph ─────────── */}
+      {/* ── Description Section ─────────── */}
       <div className="tabs-description">
+        
         <p>
-          Wild Frontiers is an award-winning adventure travel company, founded in 1998 by travel writer Jonny Bealby.
-          We specialise in stylish and original small group tours and tailor-made holidays worldwide.
-          <br /><br />
-          We are firm believers that travelling is all about the experience and it’s in the details – the places you stay,
-          the transport and route that gets you there, and the people you meet along the way – that make the trip;
-          we therefore specialise in drawing on our own extensive local knowledge and array of contacts
-          to give our clients the very best experience possible.
+          Golden Leaf Travels was born from a passion for authentic, meaningful travel. 
+          Since our beginning, we’ve focused on small group tours that immerse travelers 
+          in local cultures, landscapes, and stories — beyond the typical tourist highlights.
+        </p>
+        <p>
+          We believe travel is about connection: with people, with nature, and with the essence 
+          of a place. Every route we craft, every experience we offer, and every local partner 
+          we collaborate with is chosen to ensure our travelers see and feel the true spirit of each destination.
+        </p>
+        <p>
+          From remote villages in Nepal to vibrant markets in Southeast Asia, our journeys are designed 
+          to create memories that last a lifetime — filled with discovery, curiosity, and joy. 
+          With Golden Leaf, every trip is more than sightseeing; it’s a story you live and carry with you.
         </p>
       </div>
 
-      {/* ── Connected sections ────────────── */}
+      {/* ── Connected Sections ────────────── */}
       <section id="purpose"><OurPurpose /></section>
       <section id="story"><OurStory /></section>
       <section id="why"><Why /></section>

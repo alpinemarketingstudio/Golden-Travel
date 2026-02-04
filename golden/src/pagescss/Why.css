@@ -1,114 +1,104 @@
-.why-golden-section {
+/* Section */
+.why-section {
   width: 100%;
-  padding: 60px 0;
-  background-color: #f2f2f2; 
-}
-.why-golden-container,
-.why-golden-header,
-.feature-wrapper {
-  padding-left: 8vw;  
-  padding-right: 8vw;
-}
-.why-golden-title {
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: 5px;
+  padding: 80px 8vw;
+  background: #f7f7f7;
 }
 
-.why-golden-underline {
-  width: 60px;
+.why-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.why-underline {
+  width: 70px;
   height: 4px;
-  background-color: orange; 
-  margin-bottom: 30px;
-}
-
-.why-golden-container {
-  display: flex;
-  gap: 40px;
-  align-items: center;
+  background: orange;
   margin-bottom: 50px;
 }
 
-.why-golden-text {
-  flex: 1;
+/* Grid */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
 }
 
-.why-golden-image {
-  flex: 1;
+/* Card */
+.why-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer;
 }
 
-.why-golden-image img {
+.why-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Image */
+.why-img-wrapper {
+  height: 190px;
+  overflow: hidden;
+}
+
+.why-img {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
-/* Feature Cards Layout */
-.why-golden-features {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
+.why-card:hover .why-img {
+  transform: scale(1.08);
 }
 
-.feature-box {
-  flex: 1;
-  padding: 20px;
-  border-top: 2px solid #eee; /* Your decorative line style */
+/* Content */
+.why-content {
+  padding: 22px;
 }
 
-/* --- Mobile Specific Adjustments --- */
+.why-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #222;
+}
 
-@media (max-width: 992px) {
-  /* Stack Text and Image */
-  .why-golden-container {
-    flex-direction: column;
+.why-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .why-section {
+    padding: 60px 6vw;
     text-align: center;
   }
 
-  .why-golden-underline {
+  .why-title {
+    font-size: 1.9rem;
+  }
+
+  .why-underline {
     margin-left: auto;
     margin-right: auto;
   }
 
-  /* Grid for features on Tablet (2x2) */
-  .why-golden-features {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-}
-
-@media (max-width: 600px) {
-  /* Full stack for mobile (1 column) */
-  .why-golden-features {
+  .why-grid {
     grid-template-columns: 1fr;
-  }
-
-  .why-golden-title {
-    font-size: 1.75rem;
-    text-align: center;
-  }
-
-  .why-golden-subtitle {
-    font-size: 1.25rem;
-  }
-
-  .feature-box {
-    text-align: center;
-    padding: 15px 0;
-  }
-
-  .feature-header {
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .read-more-btn {
-    width: 100%; /* Easier to tap on mobile */
-    padding: 15px;
   }
 }

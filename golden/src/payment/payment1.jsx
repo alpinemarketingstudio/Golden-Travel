@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import { FaChevronDown, FaInfo } from "react-icons/fa";
@@ -55,12 +56,12 @@ export default function Payment1() {
       try {
         setLoading(true);
         const dealResp = await axiosInstance.get(
-          `/destinations/countries/${countrySlug}/travel-deals/${dealSlug}/`
+          `/destinations/countries/${countrySlug}/travel-deals/${dealSlug}/`,
         );
         setDealData(dealResp.data);
 
         const dateResp = await axiosInstance.get(
-          `/destinations/countries/${countrySlug}/travel-deals/${dealSlug}/dates/${dateId}/`
+          `/destinations/countries/${countrySlug}/travel-deals/${dealSlug}/dates/${dateId}/`,
         );
         setDateOptionData(dateResp.data);
       } catch (err) {
@@ -108,7 +109,7 @@ export default function Payment1() {
       setError(
         `Cannot book ${travellers} traveller${
           travellers > 1 ? "s" : ""
-        }. Only ${capacity} place${capacity !== 1 ? "s" : ""} remaining.`
+        }. Only ${capacity} place${capacity !== 1 ? "s" : ""} remaining.`,
       );
       return;
     }
@@ -138,7 +139,7 @@ export default function Payment1() {
 
       const response = await axiosInstance.post(
         "/payments/bookings/create/",
-        payload
+        payload,
       );
       const booking = response.data;
       navigate(`/payment/payment2/${booking.id}`, { state: { booking } });
@@ -321,15 +322,21 @@ export default function Payment1() {
             />
             <div className="deposit-section">
               <h4>
-                <span className="deposit-icon">💳</span> Deposit
+                <span className="deposit-icon">💳</span> Secure Payment
               </h4>
               <p>
-                Lock in your trip with a deposit if it departs 30+ days from
-                now. Read <a href="#">booking conditions</a>.
+                Confirm your Trip by completing the full payment today. Your
+                boking will be secured instantly once the payment is
+                successfull.
               </p>
               <p className="privacy-text">
-                Please see our <a href="#">Privacy and Collection notice</a>.
+                Please see our{" "}
+                <Link to="/booking" className="privacy-link">
+                  Privacy and Collection notice
+                </Link>
+                .
               </p>
+
               <button
                 className="continue-button"
                 type="submit"
@@ -345,12 +352,6 @@ export default function Payment1() {
               )}
             </div>
           </form>
-
-          <div className="footer-links">
-            <span>Privacy</span>
-            <span>Booking conditions</span>
-            <span>Data collection notice</span>
-          </div>
         </div>
 
         <div className="right-section">
@@ -394,7 +395,7 @@ export default function Payment1() {
                     USD $
                     {(
                       parseFloat(
-                        dateOptionData.discounted_price.replace("€", "").trim()
+                        dateOptionData.discounted_price.replace("€", "").trim(),
                       ) * travellers
                     ).toFixed(2)}
                   </p>
@@ -406,7 +407,7 @@ export default function Payment1() {
                 Total USD $
                 {(
                   parseFloat(
-                    dateOptionData.discounted_price.replace("€", "").trim()
+                    dateOptionData.discounted_price.replace("€", "").trim(),
                   ) * travellers
                 ).toFixed(2)}
               </h4>

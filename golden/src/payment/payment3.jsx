@@ -382,11 +382,7 @@ export default function Payment3() {
         </button>
       </div>
 
-      <div className="footer-links">
-        <a href="#">Privacy</a>
-        <a href="#">Booking conditions</a>
-        <a href="#">Data collection notice</a>
-      </div>
+      
     </div>
   );
 }

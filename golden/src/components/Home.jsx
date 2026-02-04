@@ -6,20 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/Home.css";
 import homevid1 from "../assets/homevid1.mp4";
-
-/* =========================
-   MOCK PLACES DATABASE
-========================= */
-const PLACES = [
-  "Nepal",
-  "Nigeria",
-  "Netherlands",
-  "New Zealand",
-  "Norway",
-  "Namibia",
-  "Nepalgunj",
-  "Nairobi",
-];
+import COUNTRIES from "../data/countries"; 
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,7 +39,7 @@ export default function Home() {
       return;
     }
 
-    const filtered = PLACES.filter((place) =>
+    const filtered = COUNTRIES.filter((place) =>
       place.toLowerCase().startsWith(value.toLowerCase())
     ).slice(0, 4);
 

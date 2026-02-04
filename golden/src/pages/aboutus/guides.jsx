@@ -9,7 +9,7 @@ const guidesData = [
   {
     img: guide1,
     name: "Ayush Lama",
-    country: "Nepal",
+    country: "Italy",
     quote:
       "I love helping travelers discover hidden gems in Nepal, from mountain trails to local villages. Sharing my culture is my passion.",
   },

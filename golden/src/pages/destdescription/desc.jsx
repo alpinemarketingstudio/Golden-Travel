@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import "../../pagescss/desc.css";
 
-// ✅ React Photo View
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
@@ -24,6 +23,13 @@ export default function Desc({ data, onViewDatesClick }) {
   const navigate = useNavigate();
   const [wishId, setWishId] = useState(null);
   const [loadingWish, setLoadingWish] = useState(false);
+
+  const extraImagesCount =
+    data.gallery && data.gallery.length > 5
+      ? data.gallery.length - 5
+      : 0;
+
+  const visibleGallery = data.gallery?.slice(0, 5) || [];
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -120,12 +126,15 @@ export default function Desc({ data, onViewDatesClick }) {
       </div>
 
       <div className="trip-content">
-        {/* ✅ GALLERY WITH REACT PHOTO VIEW */}
-        <PhotoProvider>
+        {/* Gallery */}
+        <PhotoProvider maskOpacity={0}>
           <div className="trip-gallery">
             <div className="top-gallery">
-              {data.gallery?.slice(0, 2).map((img, i) => (
-                <PhotoView key={i} src={img.image}>
+              {visibleGallery.slice(0, 2).map((img, i) => (
+                <PhotoView
+                  key={i}
+                  src={img.image}
+                >
                   <img
                     src={img.image}
                     alt={`${data.title} ${i + 1}`}
@@ -136,15 +145,30 @@ export default function Desc({ data, onViewDatesClick }) {
             </div>
 
             <div className="bottom-imgs">
-              {data.gallery?.slice(2, 5).map((img, i) => (
-                <PhotoView key={i + 2} src={img.image}>
-                  <img
+              {visibleGallery.slice(2).map((img, i) => {
+                const isLastVisible =
+                  i === visibleGallery.slice(2).length - 1 && extraImagesCount > 0;
+
+                return (
+                  <PhotoView
+                    key={i + 2}
                     src={img.image}
-                    alt={`${data.title} ${i + 3}`}
-                    style={{ cursor: "pointer" }}
-                  />
-                </PhotoView>
-              ))}
+                  >
+                    <div className="gallery-image-wrapper">
+                      <img
+                        src={img.image}
+                        alt={`${data.title} ${i + 3}`}
+                        style={{ cursor: "pointer" }}
+                      />
+                      {isLastVisible && (
+                        <div className="more-photos-overlay">
+                          +{extraImagesCount}
+                        </div>
+                      )}
+                    </div>
+                  </PhotoView>
+                );
+              })}
 
               <div className="testimonial">
                 <p>
@@ -158,6 +182,13 @@ export default function Desc({ data, onViewDatesClick }) {
                 </div>
               </div>
             </div>
+
+            {/* Hidden all other images for slider */}
+            {data.gallery?.slice(5).map((img, i) => (
+              <PhotoView key={`hidden-${i}`} src={img.image}>
+                <img style={{ display: "none" }} alt={`hidden ${i}`} />
+              </PhotoView>
+            ))}
           </div>
         </PhotoProvider>
 
@@ -208,13 +239,27 @@ export default function Desc({ data, onViewDatesClick }) {
 
       {/* Bottom Icons */}
       <div className="trip-icons">
-        <div><FaUserFriends /> Platinum Operator</div>
-        <div><FaUsers /> Group Tour</div>
-        <div><FaLanguage /> English Guided</div>
-        <div><FaMapSigns /> Age 1 to 99</div>
-        <div><FaGlobe /> Cultural Experience</div>
-        <div><FaMapSigns /> Partial Guided</div>
-        <div><FaUsers /> Group Size 2 - 15</div>
+        <div>
+          <FaUserFriends /> Platinum Operator
+        </div>
+        <div>
+          <FaUsers /> Group Tour
+        </div>
+        <div>
+          <FaLanguage /> English Guided
+        </div>
+        <div>
+          <FaMapSigns /> Age 1 to 99
+        </div>
+        <div>
+          <FaGlobe /> Cultural Experience
+        </div>
+        <div>
+          <FaMapSigns /> Partial Guided
+        </div>
+        <div>
+          <FaUsers /> Group Size 2 - 15
+        </div>
       </div>
     </section>
   );

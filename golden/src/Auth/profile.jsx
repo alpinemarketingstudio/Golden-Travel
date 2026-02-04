@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaUserCircle } from "react-icons/fa";
 import "../styles/profile.css";
-import bali from "../assets/bali.jpg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation } from "react-router-dom";
 
-// Tab Components
+// Tabs
 import MyBookings from "../Auth/booking";
 import Reminders from "../Auth/remainder";
 import FavouritePackages from "../Auth/fav";
 
-// Import modals
+// Modals
 import ProfileEditModal from "../Auth/ProfileEditModal";
 import ChangePasswordModal from "../Auth/ChangePasswordModal";
 
 export default function Profile() {
   const location = useLocation();
-
-  // Use the tab from location.state if provided, otherwise default to "bookings"
   const initialTab = location.state?.tab || "bookings";
 
   const [profile, setProfile] = useState(null);
@@ -29,9 +26,8 @@ export default function Profile() {
   const [newImage, setNewImage] = useState(null);
   const [activeTab, setActiveTab] = useState(initialTab);
 
-  // Modal visibility state
-  const [showProfileModal, setShowProfileModal] = React.useState(false);
-  const [showPasswordModal, setShowPasswordModal] = React.useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -51,31 +47,46 @@ export default function Profile() {
   if (loading) return <p className="profile-loading">Loading profile...</p>;
   if (error) return <p className="profile-error">{error}</p>;
 
+  /* =========================
+     PROFILE IMAGE LOGIC
+  ========================== */
+  const hasProfileImage = newImage || profile?.profile_image;
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="profile-card">
+        {/* LEFT SIDE */}
         <div className="profile-left">
           <div className="profile-img-wrapper">
-            <img
-              src={newImage || profile.profile_image || bali}
-              alt="Profile"
-              className="profile-avatar"
-            />
+            {hasProfileImage ? (
+              <img
+                src={newImage || profile.profile_image}
+                alt="Profile"
+                className="profile-avatar"
+              />
+            ) : (
+              <FaUserCircle className="profile-default-icon" />
+            )}
           </div>
-          <button className="edit-button" onClick={() => setShowProfileModal(true)}>
-            <FaStar className="edit-icon" /> Edit Profile
-          </button>
+
           <button
             className="edit-button"
-            style={{ marginTop: "10px", backgroundColor: "#f66" }}
+            onClick={() => setShowProfileModal(true)}
+          >
+            <FaStar className="edit-icon" /> Edit Profile
+          </button>
+
+          <button
+            className="edit-button danger"
             onClick={() => setShowPasswordModal(true)}
           >
             Change Password
           </button>
         </div>
 
+        {/* RIGHT SIDE */}
         <div className="profile-right">
           <div className="profile-field">
             <input type="text" value={profile.username} readOnly />
@@ -97,6 +108,7 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* TABS */}
       <div className="profile-tabs">
         <div
           className={`tab-item ${activeTab === "bookings" ? "active" : ""}`}
@@ -118,13 +130,14 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* TAB CONTENT */}
       <div className="tab-content">
         {activeTab === "bookings" && <MyBookings />}
         {activeTab === "reminders" && <Reminders />}
         {activeTab === "favourites" && <FavouritePackages />}
       </div>
 
-      {/* Modals */}
+      {/* MODALS */}
       {showProfileModal && (
         <ProfileEditModal
           profile={profile}
@@ -136,7 +149,9 @@ export default function Profile() {
         />
       )}
 
-      {showPasswordModal && <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />}
+      {showPasswordModal && (
+        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+      )}
     </>
   );
 }

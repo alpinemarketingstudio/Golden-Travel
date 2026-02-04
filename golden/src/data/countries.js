@@ -1,4 +1,5 @@
 // src/countries.js
+
 const COUNTRIES = [
   "Afghanistan",
   "Albania",
@@ -11,6 +12,7 @@ const COUNTRIES = [
   "Australia",
   "Austria",
   "Azerbaijan",
+
   "Bahamas",
   "Bahrain",
   "Bangladesh",
@@ -28,27 +30,29 @@ const COUNTRIES = [
   "Bulgaria",
   "Burkina Faso",
   "Burundi",
-  "Cabo Verde",
+
   "Cambodia",
   "Cameroon",
   "Canada",
+  "Cape Verde",
   "Central African Republic",
   "Chad",
   "Chile",
   "China",
   "Colombia",
   "Comoros",
+  "Congo",
   "Costa Rica",
-  "Côte d'Ivoire",
   "Croatia",
   "Cuba",
   "Cyprus",
   "Czech Republic",
-  "Democratic Republic of the Congo",
+
   "Denmark",
   "Djibouti",
   "Dominica",
   "Dominican Republic",
+
   "Ecuador",
   "Egypt",
   "El Salvador",
@@ -57,9 +61,11 @@ const COUNTRIES = [
   "Estonia",
   "Eswatini",
   "Ethiopia",
+
   "Fiji",
   "Finland",
   "France",
+
   "Gabon",
   "Gambia",
   "Georgia",
@@ -71,9 +77,11 @@ const COUNTRIES = [
   "Guinea",
   "Guinea-Bissau",
   "Guyana",
+
   "Haiti",
   "Honduras",
   "Hungary",
+
   "Iceland",
   "India",
   "Indonesia",
@@ -82,14 +90,17 @@ const COUNTRIES = [
   "Ireland",
   "Israel",
   "Italy",
+
   "Jamaica",
   "Japan",
   "Jordan",
+
   "Kazakhstan",
   "Kenya",
   "Kiribati",
   "Kuwait",
   "Kyrgyzstan",
+
   "Laos",
   "Latvia",
   "Lebanon",
@@ -99,6 +110,7 @@ const COUNTRIES = [
   "Liechtenstein",
   "Lithuania",
   "Luxembourg",
+
   "Madagascar",
   "Malawi",
   "Malaysia",
@@ -117,6 +129,7 @@ const COUNTRIES = [
   "Morocco",
   "Mozambique",
   "Myanmar",
+
   "Namibia",
   "Nauru",
   "Nepal",
@@ -128,7 +141,9 @@ const COUNTRIES = [
   "North Korea",
   "North Macedonia",
   "Norway",
+
   "Oman",
+
   "Pakistan",
   "Palau",
   "Panama",
@@ -138,11 +153,13 @@ const COUNTRIES = [
   "Philippines",
   "Poland",
   "Portugal",
+
   "Qatar",
-  "Republic of the Congo",
+
   "Romania",
   "Russia",
   "Rwanda",
+
   "Saint Kitts and Nevis",
   "Saint Lucia",
   "Saint Vincent and the Grenadines",
@@ -160,6 +177,7 @@ const COUNTRIES = [
   "Solomon Islands",
   "Somalia",
   "South Africa",
+  "South Korea",
   "South Sudan",
   "Spain",
   "Sri Lanka",
@@ -168,6 +186,7 @@ const COUNTRIES = [
   "Sweden",
   "Switzerland",
   "Syria",
+
   "Taiwan",
   "Tajikistan",
   "Tanzania",
@@ -180,6 +199,7 @@ const COUNTRIES = [
   "Turkey",
   "Turkmenistan",
   "Tuvalu",
+
   "Uganda",
   "Ukraine",
   "United Arab Emirates",
@@ -187,11 +207,14 @@ const COUNTRIES = [
   "United States",
   "Uruguay",
   "Uzbekistan",
+
   "Vanuatu",
   "Vatican City",
   "Venezuela",
   "Vietnam",
+
   "Yemen",
+
   "Zambia",
   "Zimbabwe"
 ];

@@ -2,6 +2,7 @@
   "dependencies": {
     "react-datepicker": "^8.4.0",
     "react-image-gallery": "^2.0.5",
+    "react-photo-view": "^1.2.7",
     "recharts": "^3.3.0"
   }
 }

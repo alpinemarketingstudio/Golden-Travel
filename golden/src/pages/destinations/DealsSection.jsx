@@ -67,7 +67,7 @@ export default function DealsSection({ data = {} }) {
       navigate("/login");
       return;
     }
-
+ 
     if (loadingWishIds.has(dealId)) return; // Prevent double clicks
 
     setLoadingWishIds((prev) => new Set(prev).add(dealId));

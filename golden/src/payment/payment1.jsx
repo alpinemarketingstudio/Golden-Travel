@@ -163,21 +163,6 @@ export default function Payment1() {
         <div className="left-section">
           <h2>Traveller details</h2>
 
-          <div className="late-request-box">
-            <div className="late-request-icon">i</div>
-            <div className="late-request-content">
-              <h6>Late request</h6>
-              <p>
-                For bookings close to departure date, full payment is required.
-                This usually takes 2 to 4 business days.
-              </p>
-              <p>
-                Please wait for confirmation before booking flights or
-                non-refundable travel arrangements.
-              </p>
-            </div>
-          </div>
-
           {capacity !== undefined ? (
             capacity > 0 && capacity < 10 ? (
               <div className="notice-box selling-fast">
@@ -334,16 +319,6 @@ export default function Payment1() {
               isClearable
               classNamePrefix="react-select"
             />
-
-            <h4>Room Option</h4>
-            <select
-              value={roomOption}
-              onChange={(e) => setRoomOption(e.target.value)}
-            >
-              <option value="shared">Shared</option>
-              <option value="private">Private</option>
-            </select>
-
             <div className="deposit-section">
               <h4>
                 <span className="deposit-icon">💳</span> Deposit

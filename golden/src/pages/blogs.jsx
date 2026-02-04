@@ -3,8 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import axiosInstance from "../utils/axiosInstance";  // use your custom axiosInstance here
-import bali from "../assets/bali.jpg";
-import img2 from "../assets/img2.jpg";
+import bali from "../assets/nepal.jpg";
+import img2 from "../assets/mountain.jpg";
 import "../styles/blogs.css";
 
 const BlogPage = () => {

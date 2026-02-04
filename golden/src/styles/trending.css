@@ -139,13 +139,19 @@
   margin-bottom: 6px;
 }
 
+/* Clamp trip description to 2 lines */
 .trend-trip-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Show only 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3em;
+  margin: 0;
   font-size: 0.85rem;
-  font-weight: 300;
-  opacity: 0.9;
-  margin-bottom: 10px;
-  line-height: 1.4;
+  color: black;
 }
+
 
 .trend-trip-days {
   font-size: 0.8rem;

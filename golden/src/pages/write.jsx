@@ -63,8 +63,8 @@ export default function BecomeContributor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (content.trim().length < 300) {
-      toast.error("Content must be at least 300 characters.");
+    if (content.trim().length < 200) {
+      toast.error("Content must be at least 200 characters.");
       return;
     }
 
@@ -176,7 +176,7 @@ export default function BecomeContributor() {
           </label>
 
           <label>
-            Content (Min. 300 characters)<span className="required">*</span>
+            Content (Min. 200 characters)<span className="required">*</span>
             <textarea
               rows={10}
               value={content}

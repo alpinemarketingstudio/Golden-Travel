@@ -14,7 +14,7 @@ export default function TrendingTours() {
   const [loadingWishIds, setLoadingWishIds] = useState(new Set());
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const truncate = (text, maxLength = 100) => {
     if (!text) return "";

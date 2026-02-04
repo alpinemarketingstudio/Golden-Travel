@@ -261,11 +261,19 @@
   margin: 0;
   color: black;
 }
+/* Clamp deal description to 2 lines */
 .sr-deal-overlay .sr-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Show only 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3em;
+  margin: 0;
   font-size: 0.85rem;
   color: black;
-  line-height: 1.3;
 }
+
 
 /* BOTTOM ROW */
 .sr-bottom-row {

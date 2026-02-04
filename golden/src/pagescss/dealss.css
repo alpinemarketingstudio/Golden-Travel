@@ -258,17 +258,21 @@ label .count {
   font-weight: 600;
   line-height: 1.2;
 }
-
+/* ========================= DEAL DESCRIPTION TRUNCATE ========================= */
 .deal-overlay.sc .excerpt {
+  display: -webkit-box;       /* Enables line-clamp */
+  -webkit-line-clamp: 2;      /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3em;         /* Same as existing line-height */
+  max-height: 2.6em;          /* line-height * 2 lines */
   margin: 0;
   font-size: 0.8rem;
   opacity: 0.95;
   font-weight: 400;
-  line-height: 1.3;
-  max-height: 2.6em;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
+
 
 /* Badges */
 .badge-row {

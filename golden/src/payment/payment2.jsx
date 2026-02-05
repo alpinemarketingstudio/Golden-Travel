@@ -154,12 +154,6 @@ export default function Payment2() {
               <span>${tripCost.toFixed(2)}</span>
             </div>
 
-            {addNights && (
-              <div className="total">
-                <span>Extra night</span>
-                <span>+ $0</span>
-              </div>
-            )}
 
             {donation && (
               <div className="total">

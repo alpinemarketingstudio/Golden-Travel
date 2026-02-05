@@ -221,6 +221,8 @@ export default function Payment1() {
                   <option value="">Select</option>
                   <option>Mr</option>
                   <option>Ms</option>
+                  <option>Miss</option>
+                  <option>Master</option>
                   <option>Mrs</option>
                 </select>
               </div>

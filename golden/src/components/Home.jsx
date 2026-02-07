@@ -27,9 +27,9 @@ export default function Home() {
       ? ReactDOM.createPortal(children, containerRef.current)
       : null;
 
-  /* =========================
+  /* ======================
      LOCATION INPUT + SUGGESTIONS
-  ========================== */
+  ======================= */
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);

@@ -52,9 +52,9 @@ export default function Home() {
     handleSearch(place);
   };
 
-  /* =========================
+  /* =================
      DATE LOGIC
-  ========================== */
+  ==================== */
   const onStartDateChange = (date) => {
     setStartDate(date);
     setEndDateError("");
